@@ -191,6 +191,8 @@ const desktopPackageJson = JSON.parse(
 ) as { version: string };
 const electronRuntimeExternals = ['electron'];
 const mainProcessRuntimeExternals = [...electronRuntimeExternals, 'node-mac-permissions'];
+const externalNavigationHosts =
+  process.env.DESKTOP_EXTERNAL_NAVIGATION_HOSTS ?? (isCloudDesktopBuild ? 'stripe.com' : '');
 
 console.info(`[electron-vite.config.ts] Detected UPDATE_CHANNEL: ${updateChannel}`);
 console.info(`[electron-vite.config.ts] Cloud desktop build: ${isCloudDesktopBuild}`);
@@ -234,6 +236,7 @@ export default defineConfig({
       sourcemap: isDev ? 'inline' : false,
     },
     define: {
+      'process.env.DESKTOP_EXTERNAL_NAVIGATION_HOSTS': JSON.stringify(externalNavigationHosts),
       'process.env.UPDATE_CHANNEL': JSON.stringify(process.env.UPDATE_CHANNEL),
       'process.env.UPDATE_SERVER_URL': JSON.stringify(process.env.UPDATE_SERVER_URL),
     },
