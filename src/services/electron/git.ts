@@ -1,11 +1,15 @@
 import {
+  type GetGitBranchDiffPayload,
   type GitAheadBehind,
+  type GitBranchDiffPatches,
   type GitBranchInfo,
   type GitBranchListItem,
   type GitCheckoutResult,
+  type GitFileRevertResult,
   type GitLinkedPullRequestResult,
   type GitPullResult,
   type GitPushResult,
+  type GitRemoteBranchListItem,
   type GitWorkingTreeFiles,
   type GitWorkingTreePatches,
   type GitWorkingTreeStatus,
@@ -42,6 +46,10 @@ class ElectronGitService {
     return this.ipc.git.listGitBranches(dirPath);
   }
 
+  async listGitRemoteBranches(dirPath: string): Promise<GitRemoteBranchListItem[]> {
+    return this.ipc.git.listGitRemoteBranches(dirPath);
+  }
+
   async getGitWorkingTreeStatus(dirPath: string): Promise<GitWorkingTreeStatus> {
     return this.ipc.git.getGitWorkingTreeStatus(dirPath);
   }
@@ -52,6 +60,10 @@ class ElectronGitService {
 
   async getGitWorkingTreePatches(dirPath: string): Promise<GitWorkingTreePatches> {
     return this.ipc.git.getGitWorkingTreePatches(dirPath);
+  }
+
+  async getGitBranchDiff(payload: GetGitBranchDiffPayload): Promise<GitBranchDiffPatches> {
+    return this.ipc.git.getGitBranchDiff(payload);
   }
 
   async getGitAheadBehind(dirPath: string): Promise<GitAheadBehind> {
@@ -72,6 +84,10 @@ class ElectronGitService {
 
   async pushGitBranch(params: { path: string }): Promise<GitPushResult> {
     return this.ipc.git.pushGitBranch(params);
+  }
+
+  async revertGitFile(params: { filePath: string; path: string }): Promise<GitFileRevertResult> {
+    return this.ipc.git.revertGitFile(params);
   }
 }
 
