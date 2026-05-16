@@ -18,6 +18,8 @@ import { TaskOutputInspector } from './TaskOutput';
 import { TaskStopInspector } from './TaskStop';
 import { TodoWriteInspector } from './TodoWrite';
 import { ToolSearchInspector } from './ToolSearch';
+import { WebFetchInspector } from './WebFetch';
+import { WebSearchInspector } from './WebSearch';
 import { WriteInspector } from './Write';
 
 // CC's own tool names (Bash / Edit / Glob / Grep / Read / Write) are already
@@ -45,6 +47,8 @@ export const ClaudeCodeInspectors = {
   [ClaudeCodeApiName.TaskStop]: TaskStopInspector,
   [ClaudeCodeApiName.TodoWrite]: TodoWriteInspector,
   [ClaudeCodeApiName.ToolSearch]: ToolSearchInspector,
+  [ClaudeCodeApiName.WebFetch]: WebFetchInspector,
+  [ClaudeCodeApiName.WebSearch]: WebSearchInspector,
   [ClaudeCodeApiName.Write]: WriteInspector,
   ...LinearMcpInspectors,
 };
