@@ -10,6 +10,7 @@ import { ClaudeCodeApiName } from '../../types';
 import { AgentInspector } from './Agent';
 import { AskUserQuestionInspector } from './AskUserQuestion';
 import { EditInspector } from './Edit';
+import { LinearMcpInspectors } from './LinearMcp';
 import { ReadInspector } from './Read';
 import { ScheduleWakeupInspector } from './ScheduleWakeup';
 import { SkillInspector } from './Skill';
@@ -45,4 +46,5 @@ export const ClaudeCodeInspectors = {
   [ClaudeCodeApiName.TodoWrite]: TodoWriteInspector,
   [ClaudeCodeApiName.ToolSearch]: ToolSearchInspector,
   [ClaudeCodeApiName.Write]: WriteInspector,
+  ...LinearMcpInspectors,
 };
