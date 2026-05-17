@@ -27,23 +27,6 @@ const AgentChat = memo(() => {
       },
       {
         children: <Switch />,
-        desc: t('settingChat.enableAutoCreateTopic.desc'),
-        label: t('settingChat.enableAutoCreateTopic.title'),
-        layout: 'horizontal',
-        minWidth: undefined,
-        name: 'enableAutoCreateTopic',
-        valuePropName: 'checked',
-      },
-      {
-        children: <SliderWithInput max={8} min={0} unlimitedInput={true} />,
-        desc: t('settingChat.autoCreateTopicThreshold.desc'),
-        divider: false,
-        hidden: !config.enableAutoCreateTopic,
-        label: t('settingChat.autoCreateTopicThreshold.title'),
-        name: 'autoCreateTopicThreshold',
-      },
-      {
-        children: <Switch />,
         label: t('settingChat.enableHistoryCount.title'),
         layout: 'horizontal',
         minWidth: undefined,
