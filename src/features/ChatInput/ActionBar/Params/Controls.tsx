@@ -1,5 +1,5 @@
 import { DEFAULT_AGENT_CONFIG } from '@lobechat/const';
-import { Flexbox, Icon, SliderWithInput } from '@lobehub/ui';
+import { Flexbox, Icon, SliderWithInput, TextArea } from '@lobehub/ui';
 import { Form as AntdForm, Switch } from 'antd';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import { debounce } from 'es-toolkit/compat';
@@ -435,7 +435,7 @@ const ControlLabel = memo<ControlLabelProps>(({ title, tooltip, tag }) => (
 ));
 
 interface ControlRowProps {
-  action: ReactNode;
+  action?: ReactNode;
   children?: ReactNode;
   muted?: boolean;
   tag?: string;
@@ -527,6 +527,11 @@ const Controls = memo<ControlsProps>(({ setUpdating, updating, variant = 'popove
   const enableHistoryCount = form.getFieldValue(['chatConfig', 'enableHistoryCount']);
   const historyCountValue = form.getFieldValue(['chatConfig', 'historyCount']);
   const maxTokensValue = form.getFieldValue(['params', 'max_tokens']);
+  const inputTemplateValue = form.getFieldValue(['chatConfig', 'inputTemplate']);
+  const enableAutoScrollOnStreaming = form.getFieldValue([
+    'chatConfig',
+    'enableAutoScrollOnStreaming',
+  ]);
   const { frequency_penalty, presence_penalty, temperature, top_p } = config.params ?? {};
 
   const historyCountFromStore = useAgentStore((s) =>
@@ -657,7 +662,7 @@ const Controls = memo<ControlsProps>(({ setUpdating, updating, variant = 'popove
   );
 
   const handleFieldChange = useCallback(
-    (namePath: (string | number)[], value: boolean | number) => {
+    (namePath: (string | number)[], value: boolean | number | string) => {
       form.setFieldValue(namePath, value);
       if (
         namePath[0] === 'params' &&
@@ -743,6 +748,33 @@ const Controls = memo<ControlsProps>(({ setUpdating, updating, variant = 'popove
                   }}
                 />
               )}
+            </ControlRow>
+            <ControlRow
+              tag="autoScroll"
+              title={t('settingChat.enableAutoScrollOnStreaming.title')}
+              tooltip={t('settingChat.enableAutoScrollOnStreaming.desc')}
+              action={
+                <Switch
+                  checked={Boolean(enableAutoScrollOnStreaming)}
+                  size={'small'}
+                  onChange={(checked) => {
+                    handleFieldChange(['chatConfig', 'enableAutoScrollOnStreaming'], checked);
+                  }}
+                />
+              }
+            />
+            <ControlRow
+              tag="inputTemplate"
+              title={t('settingChat.inputTemplate.title')}
+              tooltip={t('settingChat.inputTemplate.desc')}
+            >
+              <TextArea
+                placeholder={t('settingChat.inputTemplate.placeholder')}
+                value={typeof inputTemplateValue === 'string' ? inputTemplateValue : ''}
+                onChange={(e) => {
+                  handleFieldChange(['chatConfig', 'inputTemplate'], e.target.value);
+                }}
+              />
             </ControlRow>
           </div>
           {hasModelConfig && (

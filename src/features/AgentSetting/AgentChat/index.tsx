@@ -1,7 +1,7 @@
 'use client';
 
 import type { FormGroupItemType } from '@lobehub/ui';
-import { Form, SliderWithInput, TextArea } from '@lobehub/ui';
+import { Form, SliderWithInput } from '@lobehub/ui';
 import { Switch } from 'antd';
 import isEqual from 'fast-deep-equal';
 import { memo } from 'react';
@@ -19,12 +19,6 @@ const AgentChat = memo(() => {
 
   const chat: FormGroupItemType = {
     children: [
-      {
-        children: <TextArea placeholder={t('settingChat.inputTemplate.placeholder')} />,
-        desc: t('settingChat.inputTemplate.desc'),
-        label: t('settingChat.inputTemplate.title'),
-        name: 'inputTemplate',
-      },
       {
         children: <Switch />,
         label: t('settingChat.enableHistoryCount.title'),
@@ -48,15 +42,6 @@ const AgentChat = memo(() => {
         layout: 'horizontal',
         minWidth: undefined,
         name: 'enableCompressHistory',
-        valuePropName: 'checked',
-      },
-      {
-        children: <Switch />,
-        desc: t('settingChat.enableAutoScrollOnStreaming.desc'),
-        label: t('settingChat.enableAutoScrollOnStreaming.title'),
-        layout: 'horizontal',
-        minWidth: undefined,
-        name: 'enableAutoScrollOnStreaming',
         valuePropName: 'checked',
       },
     ],
