@@ -4,7 +4,7 @@ import { Avatar, Block, Flexbox, Icon, Text } from '@lobehub/ui';
 import { type ItemType } from 'antd/es/menu/interface';
 import { useTheme } from 'antd-style';
 import isEqual from 'fast-deep-equal';
-import { ActivityIcon, BrainIcon, MessageSquareHeartIcon, MessagesSquareIcon } from 'lucide-react';
+import { ActivityIcon, BrainIcon, MessageSquareHeartIcon } from 'lucide-react';
 import { memo, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
@@ -49,11 +49,6 @@ const Content = memo(() => {
               label: t('agentTab.opening'),
             }
           : null,
-        {
-          icon: <Icon icon={MessagesSquareIcon} />,
-          key: ChatSettingsTabs.Chat,
-          label: t('agentTab.chat'),
-        },
         {
           icon: <Icon icon={BrainIcon} />,
           key: ChatSettingsTabs.Modal,

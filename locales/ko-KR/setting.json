@@ -180,7 +180,6 @@
   "agentSkillModal.url.title": "URL에서 가져오기",
   "agentSkillModal.url.urlPlaceholder": "https://example.com/path/to/SKILL.md",
   "agentSkillTag": "에이전트 스킬",
-  "agentTab.chat": "채팅 환경설정",
   "agentTab.documents": "문서",
   "agentTab.meta": "도우미 정보",
   "agentTab.modal": "모델 설정",

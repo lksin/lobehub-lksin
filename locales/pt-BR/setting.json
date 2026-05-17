@@ -180,7 +180,6 @@
   "agentSkillModal.url.title": "Importar de URL",
   "agentSkillModal.url.urlPlaceholder": "https://exemplo.com/caminho/para/SKILL.md",
   "agentSkillTag": "Habilidade do Agente",
-  "agentTab.chat": "Preferências de Conversa",
   "agentTab.documents": "Documentos",
   "agentTab.meta": "Informações do Agente",
   "agentTab.modal": "Configurações do Modelo",

@@ -180,7 +180,6 @@
   "agentSkillModal.url.title": "استيراد من رابط",
   "agentSkillModal.url.urlPlaceholder": "https://example.com/path/to/SKILL.md",
   "agentSkillTag": "مهارة الوكيل",
-  "agentTab.chat": "تفضيلات المحادثة",
   "agentTab.documents": "المستندات",
   "agentTab.meta": "معلومات الوكيل",
   "agentTab.modal": "إعدادات النموذج",

@@ -180,7 +180,6 @@
   "agentSkillModal.url.title": "從 URL 匯入",
   "agentSkillModal.url.urlPlaceholder": "https://example.com/path/to/SKILL.md",
   "agentSkillTag": "代理技能",
-  "agentTab.chat": "聊天偏好",
   "agentTab.documents": "文件",
   "agentTab.meta": "助手資訊",
   "agentTab.modal": "模型設定",

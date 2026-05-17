@@ -180,7 +180,6 @@
   "agentSkillModal.url.title": "وارد کردن از URL",
   "agentSkillModal.url.urlPlaceholder": "https://example.com/path/to/SKILL.md",
   "agentSkillTag": "مهارت عامل",
-  "agentTab.chat": "تنظیمات گفتگو",
   "agentTab.documents": "اسناد",
   "agentTab.meta": "اطلاعات عامل",
   "agentTab.modal": "تنظیمات مدل",

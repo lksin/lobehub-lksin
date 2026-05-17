@@ -180,7 +180,6 @@
   "agentSkillModal.url.title": "Nhập từ URL",
   "agentSkillModal.url.urlPlaceholder": "https://example.com/path/to/SKILL.md",
   "agentSkillTag": "Kỹ năng Đại lý",
-  "agentTab.chat": "Tùy chọn trò chuyện",
   "agentTab.documents": "Tài liệu",
   "agentTab.meta": "Thông tin Agent",
   "agentTab.modal": "Cài đặt Mô hình",

@@ -180,7 +180,6 @@
   "agentSkillModal.url.title": "URLからインポート",
   "agentSkillModal.url.urlPlaceholder": "https://example.com/path/to/SKILL.md",
   "agentSkillTag": "エージェントスキル",
-  "agentTab.chat": "チャット設定",
   "agentTab.documents": "ドキュメント",
   "agentTab.meta": "メタ情報",
   "agentTab.modal": "モーダル設定",
