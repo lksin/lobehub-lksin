@@ -182,7 +182,6 @@
   "agentSkillTag": "エージェントスキル",
   "agentTab.documents": "ドキュメント",
   "agentTab.meta": "メタ情報",
-  "agentTab.modal": "モーダル設定",
   "agentTab.opening": "オープニング設定",
   "agentTab.plugin": "スキル設定",
   "agentTab.prompt": "プロンプト設定",

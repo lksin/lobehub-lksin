@@ -22,7 +22,6 @@ export enum SidebarTabKey {
 }
 
 export enum ChatSettingsTabs {
-  Modal = 'modal',
   Opening = 'opening',
   Plugin = 'plugin',
   Prompt = 'prompt',

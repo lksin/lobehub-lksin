@@ -182,7 +182,6 @@
   "agentSkillTag": "Навык агента",
   "agentTab.documents": "Документы",
   "agentTab.meta": "Информация об агенте",
-  "agentTab.modal": "Настройки модели",
   "agentTab.opening": "Начальные настройки",
   "agentTab.plugin": "Настройки навыков",
   "agentTab.prompt": "Профиль агента",

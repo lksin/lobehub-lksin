@@ -182,7 +182,6 @@
   "agentSkillTag": "Compétence d'agent",
   "agentTab.documents": "Documents",
   "agentTab.meta": "Informations de l'agent",
-  "agentTab.modal": "Paramètres du modèle",
   "agentTab.opening": "Paramètres d'ouverture",
   "agentTab.plugin": "Paramètres des compétences",
   "agentTab.prompt": "Profil de l'agent",
