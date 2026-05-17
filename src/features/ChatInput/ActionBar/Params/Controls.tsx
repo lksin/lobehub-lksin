@@ -770,6 +770,20 @@ const Controls = memo<ControlsProps>(({ setUpdating, updating, variant = 'popove
               }
             />
             <ControlRow
+              tag="streaming"
+              title={t('settingChat.enableStreaming.title')}
+              tooltip={t('settingChat.enableStreaming.desc')}
+              action={
+                <Switch
+                  checked={enableStreaming !== false}
+                  size={'small'}
+                  onChange={(checked) => {
+                    handleFieldChange(['chatConfig', 'enableStreaming'], checked);
+                  }}
+                />
+              }
+            />
+            <ControlRow
               tag="inputTemplate"
               title={t('settingChat.inputTemplate.title')}
               tooltip={t('settingChat.inputTemplate.desc')}
@@ -802,128 +816,121 @@ const Controls = memo<ControlsProps>(({ setUpdating, updating, variant = 'popove
               )}
             </>
           )}
-          <div className={styles.divider} />
-          <SectionHeader
-            open={advancedOpen}
-            title={t('settingModel.params.panel.advanced')}
-            onToggle={handleAdvancedOpenChange}
-          />
-          {advancedOpen && (
-            <div className={styles.advancedContent}>
-              <ControlRow
-                tag="streaming"
-                title={t('settingChat.enableStreaming.title')}
-                tooltip={t('settingChat.enableStreaming.desc')}
-                action={
-                  <Switch
-                    checked={enableStreaming !== false}
-                    size={'small'}
-                    onChange={(checked) => {
-                      handleFieldChange(['chatConfig', 'enableStreaming'], checked);
-                    }}
-                  />
-                }
+          {!enableAgentMode && (
+            <>
+              <div className={styles.divider} />
+              <SectionHeader
+                open={advancedOpen}
+                title={t('settingModel.params.panel.advanced')}
+                onToggle={handleAdvancedOpenChange}
               />
-              {PARAM_ORDER.filter((key) => !disabledParams?.includes(key)).map((key) => {
-                const meta = PARAM_CONFIG[key];
-                const enabled = enabledMap[key];
+              {advancedOpen && (
+                <div className={styles.advancedContent}>
+                  {PARAM_ORDER.filter((key) => !disabledParams?.includes(key)).map((key) => {
+                    const meta = PARAM_CONFIG[key];
+                    const enabled = enabledMap[key];
 
-                return (
+                    return (
+                      <ControlRow
+                        key={key}
+                        muted={!enabled}
+                        tag={meta.tag}
+                        title={t(meta.labelKey)}
+                        tooltip={t(meta.descKey)}
+                        action={
+                          <Switch
+                            checked={enabled}
+                            size={'small'}
+                            onChange={(checked) => {
+                              handleToggle(key, checked);
+                            }}
+                          />
+                        }
+                      >
+                        {enabled && (
+                          <SliderField
+                            value={form.getFieldValue(PARAM_NAME_MAP[key])}
+                            onChange={(value) => {
+                              handleFieldChange(PARAM_NAME_MAP[key], value);
+                            }}
+                            {...meta.slider}
+                          />
+                        )}
+                      </ControlRow>
+                    );
+                  })}
                   <ControlRow
-                    key={key}
-                    muted={!enabled}
-                    tag={meta.tag}
-                    title={t(meta.labelKey)}
-                    tooltip={t(meta.descKey)}
+                    tag="max_tokens"
+                    title={t('settingModel.params.panel.responseLength')}
+                    tooltip={t('settingModel.maxTokens.desc')}
                     action={
                       <Switch
-                        checked={enabled}
+                        checked={Boolean(enableMaxTokens)}
                         size={'small'}
                         onChange={(checked) => {
-                          handleToggle(key, checked);
+                          if (checked && typeof maxTokensValue !== 'number') {
+                            form.setFieldValue(['params', 'max_tokens'], 4096);
+                          }
+                          handleFieldChange(['chatConfig', 'enableMaxTokens'], checked);
                         }}
                       />
                     }
                   >
-                    {enabled && (
+                    {enableMaxTokens && (
                       <SliderField
-                        value={form.getFieldValue(PARAM_NAME_MAP[key])}
+                        unlimitedInput
+                        inputWidth={64}
+                        max={32_000}
+                        min={0}
+                        step={100}
+                        value={typeof maxTokensValue === 'number' ? maxTokensValue : 4096}
                         onChange={(value) => {
-                          handleFieldChange(PARAM_NAME_MAP[key], value);
+                          handleFieldChange(['params', 'max_tokens'], value);
                         }}
-                        {...meta.slider}
                       />
                     )}
                   </ControlRow>
-                );
-              })}
-              <ControlRow
-                tag="max_tokens"
-                title={t('settingModel.params.panel.responseLength')}
-                tooltip={t('settingModel.maxTokens.desc')}
-                action={
-                  <Switch
-                    checked={Boolean(enableMaxTokens)}
-                    size={'small'}
-                    onChange={(checked) => {
-                      if (checked && typeof maxTokensValue !== 'number') {
-                        form.setFieldValue(['params', 'max_tokens'], 4096);
-                      }
-                      handleFieldChange(['chatConfig', 'enableMaxTokens'], checked);
-                    }}
-                  />
-                }
-              >
-                {enableMaxTokens && (
-                  <SliderField
-                    unlimitedInput
-                    inputWidth={64}
-                    max={32_000}
-                    min={0}
-                    step={100}
-                    value={typeof maxTokensValue === 'number' ? maxTokensValue : 4096}
-                    onChange={(value) => {
-                      handleFieldChange(['params', 'max_tokens'], value);
-                    }}
-                  />
-                )}
-              </ControlRow>
-              <ControlRow
-                tag="reasoning_effort"
-                title={t('settingModel.reasoningEffort.title')}
-                tooltip={t('settingModel.reasoningEffort.desc')}
-                action={
-                  <Switch
-                    checked={Boolean(enableReasoningEffort)}
-                    size={'small'}
-                    onChange={(checked) => {
-                      if (checked && typeof reasoningEffortValue !== 'string') {
-                        form.setFieldValue(['params', 'reasoning_effort'], 'medium');
-                      }
-                      handleFieldChange(['chatConfig', 'enableReasoningEffort'], checked);
-                    }}
-                  />
-                }
-              >
-                {enableReasoningEffort && (
-                  <Select
-                    size={'small'}
-                    style={{ width: '100%' }}
-                    value={
-                      typeof reasoningEffortValue === 'string' ? reasoningEffortValue : 'medium'
+                  <ControlRow
+                    tag="reasoning_effort"
+                    title={t('settingModel.reasoningEffort.title')}
+                    tooltip={t('settingModel.reasoningEffort.desc')}
+                    action={
+                      <Switch
+                        checked={Boolean(enableReasoningEffort)}
+                        size={'small'}
+                        onChange={(checked) => {
+                          if (checked && typeof reasoningEffortValue !== 'string') {
+                            form.setFieldValue(['params', 'reasoning_effort'], 'medium');
+                          }
+                          handleFieldChange(['chatConfig', 'enableReasoningEffort'], checked);
+                        }}
+                      />
                     }
-                    options={[
-                      { label: t('settingModel.reasoningEffort.options.low'), value: 'low' },
-                      { label: t('settingModel.reasoningEffort.options.medium'), value: 'medium' },
-                      { label: t('settingModel.reasoningEffort.options.high'), value: 'high' },
-                    ]}
-                    onChange={(value) => {
-                      handleFieldChange(['params', 'reasoning_effort'], value);
-                    }}
-                  />
-                )}
-              </ControlRow>
-            </div>
+                  >
+                    {enableReasoningEffort && (
+                      <Select
+                        size={'small'}
+                        style={{ width: '100%' }}
+                        options={[
+                          { label: t('settingModel.reasoningEffort.options.low'), value: 'low' },
+                          {
+                            label: t('settingModel.reasoningEffort.options.medium'),
+                            value: 'medium',
+                          },
+                          { label: t('settingModel.reasoningEffort.options.high'), value: 'high' },
+                        ]}
+                        value={
+                          typeof reasoningEffortValue === 'string' ? reasoningEffortValue : 'medium'
+                        }
+                        onChange={(value) => {
+                          handleFieldChange(['params', 'reasoning_effort'], value);
+                        }}
+                      />
+                    )}
+                  </ControlRow>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
