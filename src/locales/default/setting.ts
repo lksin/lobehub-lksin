@@ -1197,9 +1197,7 @@ When I am ___, I need ___
   'workspace.billingPage.credits.balance.plansUsage': 'Subscription credits',
   'workspace.billingPage.credits.balance.plansUsageDesc':
     'Subscription credits are used first, then top-up credits',
-  'workspace.billingPage.credits.balance.sharedHint':
-    'All members of this workspace draw from the same balance — usage by any seat reduces the pool.',
-  'workspace.billingPage.credits.balance.sharedTag': 'Workspace-shared',
+  'workspace.billingPage.credits.balance.sharedHint': 'Shared by all workspace members',
   'workspace.billingPage.credits.balance.title': 'Balance',
   'workspace.billingPage.credits.title': 'Credits',
   'workspace.billingPage.credits.topUp.custom': 'Custom',
@@ -1217,6 +1215,12 @@ When I am ___, I need ___
   'workspace.billingPage.credits.topUp.validityInfo': 'valid for {{months}} months',
   'workspace.billingPage.credits.autoTopUp.enable': 'Enable auto top-up',
   'workspace.billingPage.credits.autoTopUp.monthlyCap': 'Monthly cap',
+  'workspace.billingPage.credits.autoTopUp.noCustomerHint':
+    'Purchase credits once and save a payment method to enable auto top-up.',
+  'workspace.billingPage.credits.autoTopUp.noPaymentMethodHint':
+    'No saved payment method. Set one up to enable auto top-up.',
+  'workspace.billingPage.credits.autoTopUp.purchaseCredits': 'Purchase credits',
+  'workspace.billingPage.credits.autoTopUp.setupPaymentMethod': 'Set up payment method',
   'workspace.billingPage.credits.autoTopUp.monthlyLimitReached':
     "This month's auto top-up has reached the cap; will resume next month.",
   'workspace.billingPage.credits.autoTopUp.pausedReason.manual': 'Auto top-up was paused manually.',
