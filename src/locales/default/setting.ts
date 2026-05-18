@@ -1181,8 +1181,8 @@ When I am ___, I need ___
   'workspace.billingPage.credits.packages.sourceLabel.autoTopUp': 'Auto top-up',
   'workspace.billingPage.credits.packages.sourceLabel.systemGift': 'System gift',
   'workspace.billingPage.credits.packages.sourceLabel.userPurchase': 'Sales add-on',
+  'workspace.billingPage.credits.packages.title': 'Workspace credit packages',
   'workspace.billingPage.credits.packages.usedPercent': 'Used',
-  'workspace.billingPage.credits.packagesTitle': 'Credit packages',
   'workspace.billingPage.credits.poolDesc': 'Shared across all seats. Resets each billing cycle.',
   'workspace.billingPage.credits.poolTitle': 'Workspace credit pool',
   'workspace.billingPage.credits.resetAt': 'Next reset: {{date}}',
@@ -1198,6 +1198,7 @@ When I am ___, I need ___
   'workspace.billingPage.credits.balance.plansUsageDesc':
     'Subscription credits are used first, then top-up credits',
   'workspace.billingPage.credits.balance.sharedHint': 'Shared by all workspace members',
+  'workspace.billingPage.credits.balance.sharedTag': 'Workspace-shared',
   'workspace.billingPage.credits.balance.title': 'Balance',
   'workspace.billingPage.credits.title': 'Credits',
   'workspace.billingPage.credits.topUp.custom': 'Custom',
