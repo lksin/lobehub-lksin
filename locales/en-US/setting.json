@@ -1433,7 +1433,6 @@
   "workspace.wizard.step2.features.pro.priorityModels": "Priority access to premium models",
   "workspace.wizard.step2.features.pro.support": "Priority email support",
   "workspace.wizard.step2.freeLimitReached": "You've reached the free workspace limit ({{limit}}). Upgrade to Pro to create more.",
-  "workspace.wizard.step2.left.creditsHobbyHint": "Monthly credits · workspace-wide shared pool",
   "workspace.wizard.step2.left.creditsLabel": "Credits per month",
   "workspace.wizard.step2.left.creditsProHint": "Workspace-wide shared pool · seats add seats, not credits",
   "workspace.wizard.step2.left.freeHeadline": "Spin up a solo workspace",

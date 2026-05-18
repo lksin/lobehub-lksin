@@ -1418,7 +1418,6 @@ When I am ___, I need ___
   'workspace.wizard.step2.features.pro.onDemand': 'Extra usage billed on-demand · AutoTopUp',
   'workspace.wizard.step2.features.pro.priorityModels': 'Priority access to premium models',
   'workspace.wizard.step2.features.pro.support': 'Priority email support',
-  'workspace.wizard.step2.left.creditsHobbyHint': 'Monthly credits · workspace-wide shared pool',
   'workspace.wizard.step2.left.creditsLabel': 'Credits per month',
   'workspace.wizard.step2.left.creditsProHint':
     'Workspace-wide shared pool · seats add seats, not credits',

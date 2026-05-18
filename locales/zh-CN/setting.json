@@ -1433,7 +1433,6 @@
   "workspace.wizard.step2.features.pro.priorityModels": "优先访问高级模型",
   "workspace.wizard.step2.features.pro.support": "优先电子邮件支持",
   "workspace.wizard.step2.freeLimitReached": "您已达到免费工作区限制（{{limit}}）。升级到专业版以创建更多。",
-  "workspace.wizard.step2.left.creditsHobbyHint": "月度额度 · 工作区范围内共享池",
   "workspace.wizard.step2.left.creditsLabel": "每月额度",
   "workspace.wizard.step2.left.creditsProHint": "工作区范围内共享池 · 席位增加席位数，但不增加额度",
   "workspace.wizard.step2.left.freeHeadline": "启动一个单人工作区",
