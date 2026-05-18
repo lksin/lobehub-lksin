@@ -84,6 +84,19 @@ export class WorkspaceModel {
     return workspace?.settings ?? {};
   };
 
+  /**
+   * Count every workspace this user belongs to — owned + joined. Reads the
+   * membership table directly because owners are always inserted as members on
+   * `create`, so a single count covers both shapes.
+   */
+  countUserMemberships = async (): Promise<number> => {
+    const result = await this.db
+      .select({ count: count() })
+      .from(workspaceMembers)
+      .where(eq(workspaceMembers.userId, this.userId));
+    return result[0]?.count ?? 0;
+  };
+
   listUserWorkspaces = async () => {
     const memberships = await this.db.query.workspaceMembers.findMany({
       where: eq(workspaceMembers.userId, this.userId),

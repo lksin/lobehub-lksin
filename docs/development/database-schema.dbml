@@ -1485,27 +1485,35 @@ table rbac_role_permissions {
 
 table rbac_roles {
   id text [pk, not null]
-  name text [not null, unique]
+  name text [not null]
   display_name text [not null]
   description text
   is_system boolean [not null, default: false]
   is_active boolean [not null, default: true]
   metadata jsonb [default: `{}`]
+  workspace_id text
   accessed_at "timestamp with time zone" [not null, default: `now()`]
   created_at "timestamp with time zone" [not null, default: `now()`]
   updated_at "timestamp with time zone" [not null, default: `now()`]
+
+  indexes {
+    (name, workspace_id) [name: 'rbac_roles_name_scope_unique', unique]
+    workspace_id [name: 'rbac_roles_workspace_id_idx']
+  }
 }
 
 table rbac_user_roles {
   user_id text [not null]
   role_id text [not null]
+  workspace_id text
   created_at "timestamp with time zone" [not null, default: `now()`]
   expires_at "timestamp with time zone"
 
   indexes {
-    (user_id, role_id) [pk]
+    (user_id, role_id, workspace_id) [name: 'rbac_user_roles_user_role_scope_unique', unique]
     user_id [name: 'rbac_user_roles_user_id_idx']
     role_id [name: 'rbac_user_roles_role_id_idx']
+    workspace_id [name: 'rbac_user_roles_workspace_id_idx']
   }
 }
 

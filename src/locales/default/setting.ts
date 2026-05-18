@@ -1189,6 +1189,18 @@ When I am ___, I need ___
   'workspace.billingPage.credits.status.cancelledCta': 'Resume subscription',
   'workspace.billingPage.credits.status.cancelledDesc':
     'Subscription is scheduled to end on {{date}}. Credits will stop refreshing after that.',
+  'workspace.billingPage.credits.balance.creditBalance': 'Top-up credits balance',
+  'workspace.billingPage.credits.balance.hobbyDesc':
+    'Hobby workspaces do not include subscription credits — top up below or upgrade to Pro.',
+  'workspace.billingPage.credits.balance.link.history': 'Top-up history',
+  'workspace.billingPage.credits.balance.link.usage': 'View usage',
+  'workspace.billingPage.credits.balance.plansUsage': 'Subscription credits',
+  'workspace.billingPage.credits.balance.plansUsageDesc':
+    'Subscription credits are used first, then top-up credits',
+  'workspace.billingPage.credits.balance.sharedHint':
+    'All members of this workspace draw from the same balance — usage by any seat reduces the pool.',
+  'workspace.billingPage.credits.balance.sharedTag': 'Workspace-shared',
+  'workspace.billingPage.credits.balance.title': 'Balance',
   'workspace.billingPage.credits.title': 'Credits',
   'workspace.billingPage.credits.topUp.custom': 'Custom',
   'workspace.billingPage.credits.topUp.maxAmountError':
@@ -1198,7 +1210,10 @@ When I am ___, I need ___
   'workspace.billingPage.credits.topUp.selectPackage': 'Select a credit pack',
   'workspace.billingPage.credits.topUp.title': 'Purchase credits',
   'workspace.billingPage.credits.topUp.total': 'Total',
-  'workspace.billingPage.credits.topUp.unitPriceFormat': '{{price}} per million compute credits',
+  'workspace.billingPage.credits.topUp.unitPriceFormat': '${{price}} per million compute credits',
+  'workspace.billingPage.credits.topUp.upgradePlanName': 'Pro',
+  'workspace.billingPage.credits.topUp.upgradePrefix': 'Upgrade to',
+  'workspace.billingPage.credits.topUp.upgradeSuffix': 'to save ${{savings}}',
   'workspace.billingPage.credits.topUp.validityInfo': 'valid for {{months}} months',
   'workspace.billingPage.credits.autoTopUp.enable': 'Enable auto top-up',
   'workspace.billingPage.credits.autoTopUp.monthlyCap': 'Monthly cap',
@@ -1437,6 +1452,8 @@ When I am ___, I need ___
   'workspace.wizard.step2.createdToast': 'Workspace {{name}} created.',
   'workspace.wizard.step2.freeLimitReached':
     "You've reached the free workspace limit ({{limit}}). Upgrade to Pro to create more.",
+  'workspace.wizard.step2.totalLimitReached':
+    "You've reached the maximum of {{limit}} workspaces. Leave one before creating another.",
   'workspace.wizard.step2.features.hobby.share': 'Share within a single owner',
   'workspace.wizard.step2.features.hobby.solo': 'Solo workspace, no extra members',
   'workspace.wizard.step2.features.hobby.upgradable': 'Upgrade anytime to invite teammates',

@@ -1,8 +1,9 @@
 import { and, eq, inArray, sql } from 'drizzle-orm';
 
-import { LobeChatDatabase } from '@/database/type';
+import type { LobeChatDatabase } from '@/database/type';
 
-import { RoleItem, permissions, rolePermissions, roles, userRoles } from '../schemas/rbac';
+import type { RoleItem } from '../schemas/rbac';
+import { permissions, rolePermissions, roles, userRoles } from '../schemas/rbac';
 
 export interface UserPermissionInfo {
   category: string;
@@ -175,6 +176,7 @@ export class RbacModel {
         metadata: roles.metadata,
         name: roles.name,
         updatedAt: roles.updatedAt,
+        workspaceId: roles.workspaceId,
       })
       .from(userRoles)
       .innerJoin(roles, eq(userRoles.roleId, roles.id))
