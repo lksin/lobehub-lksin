@@ -1,14 +1,18 @@
 import { z } from 'zod';
 
+import { wsCompatProcedure } from '@/business/server/trpc-middlewares/workspaceAuth';
 import { NotificationModel } from '@/database/models/notification';
-import { authedProcedure, router } from '@/libs/trpc/lambda';
+import { router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
 
-const notificationProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
+const notificationProcedure = wsCompatProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
 
   return opts.next({
-    ctx: { notificationModel: new NotificationModel(ctx.serverDB, ctx.userId) },
+    ctx: {
+      notificationModel: new NotificationModel(ctx.serverDB, ctx.userId, wsId),
+    },
   });
 });
 

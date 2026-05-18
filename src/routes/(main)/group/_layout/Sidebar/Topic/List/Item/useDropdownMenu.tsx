@@ -16,10 +16,10 @@ import {
 } from 'lucide-react';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import { isDesktop } from '@/const/version';
 import { pluginRegistry } from '@/features/Electron/titlebar/RecentlyViewed/plugins';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useAppOrigin } from '@/hooks/useAppOrigin';
 import { useAgentGroupStore } from '@/store/agentGroup';
 import { useChatStore } from '@/store/chat';
@@ -39,7 +39,7 @@ export const useTopicItemDropdownMenu = ({
 }: TopicItemDropdownMenuProps): (() => MenuProps['items']) => {
   const { t } = useTranslation(['topic', 'common']);
   const { modal, message } = App.useApp();
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
 
   const openGroupTopicInNewWindow = useGlobalStore((s) => s.openGroupTopicInNewWindow);
   const activeGroupId = useAgentGroupStore((s) => s.activeGroupId);

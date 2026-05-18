@@ -3,23 +3,30 @@ import type { TaskListItem, TaskParticipant } from '@lobechat/types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
+import { wsCompatProcedure } from '@/business/server/trpc-middlewares/workspaceAuth';
 import { AgentModel } from '@/database/models/agent';
 import { BriefModel } from '@/database/models/brief';
 import { TaskModel } from '@/database/models/task';
 import { TaskTopicModel } from '@/database/models/taskTopic';
-import { authedProcedure, router } from '@/libs/trpc/lambda';
+import { TopicModel } from '@/database/models/topic';
+import { router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
 import { TaskService } from '@/server/services/task';
+import { TaskLifecycleService } from '@/server/services/taskLifecycle';
 import { TaskRunnerService } from '@/server/services/taskRunner';
 
-const taskProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
+const taskProcedure = wsCompatProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
   return opts.next({
     ctx: {
-      agentModel: new AgentModel(ctx.serverDB, ctx.userId),
-      taskModel: new TaskModel(ctx.serverDB, ctx.userId),
-      taskService: new TaskService(ctx.serverDB, ctx.userId),
-      taskTopicModel: new TaskTopicModel(ctx.serverDB, ctx.userId),
+      agentModel: new AgentModel(ctx.serverDB, ctx.userId, wsId),
+      briefModel: new BriefModel(ctx.serverDB, ctx.userId, wsId),
+      taskLifecycle: new TaskLifecycleService(ctx.serverDB, ctx.userId, wsId),
+      taskModel: new TaskModel(ctx.serverDB, ctx.userId, wsId),
+      taskService: new TaskService(ctx.serverDB, ctx.userId, wsId),
+      taskTopicModel: new TaskTopicModel(ctx.serverDB, ctx.userId, wsId),
+      topicModel: new TopicModel(ctx.serverDB, ctx.userId, wsId),
     },
   });
 });
@@ -528,14 +535,15 @@ export const taskRouter = router({
       const failed: string[] = [];
 
       for (const task of stuckTasks) {
-        const model = new TaskModel(ctx.serverDB, task.createdByUserId);
+        const wsId = task.workspaceId ?? undefined;
+        const model = new TaskModel(ctx.serverDB, task.createdByUserId, wsId);
         await model.updateStatus(task.id, 'failed', {
           completedAt: new Date(),
           error: 'Heartbeat timeout',
         });
 
         // Create error brief
-        const briefModel = new BriefModel(ctx.serverDB, task.createdByUserId);
+        const briefModel = new BriefModel(ctx.serverDB, task.createdByUserId, wsId);
         await briefModel.create({
           agentId: task.assigneeAgentId || undefined,
           priority: 'urgent',
@@ -653,7 +661,11 @@ export const taskRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       try {
-        const runner = new TaskRunnerService(ctx.serverDB, ctx.userId);
+        const runner = new TaskRunnerService(
+          ctx.serverDB,
+          ctx.userId,
+          ctx.workspaceId ?? undefined,
+        );
         return await runner.runTask({
           continueTopicId: input.continueTopicId,
           extraPrompt: input.prompt,

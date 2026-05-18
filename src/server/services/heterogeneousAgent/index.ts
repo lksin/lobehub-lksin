@@ -44,6 +44,11 @@ export interface HeterogeneousAgentServiceOptions {
   streamEventManager?: IStreamEventManager;
   /** Inject a pre-built TopicModel (used by tests for the resume helper). */
   topicModel?: TopicModel;
+  /**
+   * Workspace id for scoping internal model reads/writes (messages, topics,
+   * threads). Falls back to user-personal scope when omitted.
+   */
+  workspaceId?: string;
 }
 
 /**
@@ -71,13 +76,14 @@ export class HeterogeneousAgentService {
   ) {
     this.db = db;
     this.userId = userId;
+    const workspaceId = options.workspaceId;
     this.streamEventManager = options.streamEventManager ?? createStreamEventManager();
-    this.topicModel = options.topicModel ?? new TopicModel(db, userId);
+    this.topicModel = options.topicModel ?? new TopicModel(db, userId, workspaceId);
     this.persistenceHandler =
       options.persistenceHandler ??
       new HeterogeneousPersistenceHandler({
-        messageModel: new MessageModel(db, userId),
-        threadModel: new ThreadModel(db, userId),
+        messageModel: new MessageModel(db, userId, workspaceId),
+        threadModel: new ThreadModel(db, userId, workspaceId),
         topicModel: this.topicModel,
       });
   }

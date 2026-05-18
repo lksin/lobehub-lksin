@@ -9,9 +9,9 @@ import { createStyles } from 'antd-style';
 import { Loader2Icon, PencilLine, RefreshCw, XCircle } from 'lucide-react';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import HeterogeneousAgentStatusGuide from '@/features/Electron/HeterogeneousAgent/StatusGuide';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { toolDetectorService } from '@/services/electron/toolDetector';
 
 const COMMAND_LINE_HEIGHT = 28;
@@ -213,7 +213,7 @@ const HeterogeneousAgentStatusCard = memo<HeterogeneousAgentStatusCardProps>(
   ({ provider, onCommandChange }) => {
     const { t } = useTranslation('setting');
     const { styles } = useStyles();
-    const navigate = useNavigate();
+    const navigate = useWorkspaceAwareNavigate();
     const providerConfig = getHeterogeneousAgentClientConfig(provider.type);
     const defaultCommand = providerConfig?.command || '';
     const resolvedCommand = provider.command?.trim() || defaultCommand;

@@ -2,8 +2,8 @@ import type { TaskTemplate } from '@lobechat/const';
 import { App } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { taskTemplateService } from '@/services/taskTemplate';
 import { useAgentStore } from '@/store/agent';
 import { builtinAgentSelectors } from '@/store/agent/selectors';
@@ -40,7 +40,7 @@ export const useTaskTemplateCreate = ({
   const [created, setCreated] = useState(false);
   const inboxAgentId = useAgentStore(builtinAgentSelectors.inboxAgentId);
   const createTask = useTaskStore((s) => s.createTask);
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const requiredConnection = useSkillConnection(template.requiresSkills);
 
   const handleCreate = useCallback(async () => {

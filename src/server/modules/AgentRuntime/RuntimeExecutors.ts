@@ -222,6 +222,13 @@ export interface RuntimeExecutorContext {
   topicId?: string;
   userId?: string;
   userTimezone?: string;
+  /**
+   * Workspace scoping for ownership filters on models/services constructed
+   * inside the agent runtime. Threaded down from the originating request
+   * (chat/task router) and forwarded to tool executions via
+   * `ToolExecutionContext.workspaceId`.
+   */
+  workspaceId?: string;
 }
 
 export const createRuntimeExecutors = (
@@ -1673,6 +1680,7 @@ export const createRuntimeExecutors = (
               toolResultMaxLength,
               topicId: ctx.topicId,
               userId: ctx.userId,
+              workspaceId: state.metadata?.workspaceId ?? ctx.workspaceId,
             }),
           {
             isInterrupted: () => isOperationInterrupted(ctx),
@@ -2135,6 +2143,7 @@ export const createRuntimeExecutors = (
                   toolResultMaxLength: batchAgentConfig?.chatConfig?.toolResultMaxLength,
                   topicId: ctx.topicId,
                   userId: ctx.userId,
+                  workspaceId: state.metadata?.workspaceId ?? ctx.workspaceId,
                 }),
               {
                 isInterrupted: () => isOperationInterrupted(ctx),

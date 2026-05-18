@@ -5,12 +5,13 @@ import isEqual from 'fast-deep-equal';
 import { BotMessageSquareIcon, MoreHorizontal, Settings2Icon, Trash } from 'lucide-react';
 import { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
+import { useBusinessAgentImportMenuItem } from '@/business/client/hooks/useBusinessAgentImportMenuItem';
 import { message } from '@/components/AntdStaticMethods';
 import { DESKTOP_HEADER_ICON_SMALL_SIZE } from '@/const/layoutTokens';
 import NavHeader from '@/features/NavHeader';
 import ToggleRightPanelButton from '@/features/RightPanel/ToggleRightPanelButton';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useMarketAuth } from '@/layout/AuthProvider/MarketAuth';
 import { resolveMarketAuthError } from '@/layout/AuthProvider/MarketAuth/errors';
 import { useAgentStore } from '@/store/agent';
@@ -28,7 +29,7 @@ import AutoSaveHint from './AutoSaveHint';
 const Header = memo(() => {
   const { t } = useTranslation(['setting', 'marketAuth', 'chat']);
   const { modal } = App.useApp();
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
 
   const meta = useAgentStore(agentSelectors.currentAgentMeta, isEqual);
   const systemRole = useAgentStore(agentSelectors.currentAgentSystemRole);
@@ -132,31 +133,36 @@ const Header = memo(() => {
     });
   }, [activeAgentId, modal, navigate, removeAgent, t]);
 
+  const importMenuItem = useBusinessAgentImportMenuItem(activeAgentId ?? undefined);
+
   const menuItems = useMemo(
-    () => [
-      {
-        icon: <Icon icon={Settings2Icon} />,
-        key: 'advanced-settings',
-        label: t('advancedSettings', { ns: 'setting' }),
-        onClick: () => useAgentStore.setState({ showAgentSetting: true }),
-      },
-      { type: 'divider' as const },
-      {
-        icon: <Icon icon={ShapesUploadIcon} />,
-        key: 'publish',
-        label: t('publishToCommunity', { ns: 'setting' }),
-        onClick: handlePublishClick,
-      },
-      { type: 'divider' as const },
-      {
-        danger: true,
-        icon: <Icon icon={Trash} />,
-        key: 'delete',
-        label: t('delete', { ns: 'common' }),
-        onClick: handleDelete,
-      },
-    ],
-    [handlePublishClick, handleDelete, t],
+    () =>
+      [
+        {
+          icon: <Icon icon={Settings2Icon} />,
+          key: 'advanced-settings',
+          label: t('advancedSettings', { ns: 'setting' }),
+          onClick: () => useAgentStore.setState({ showAgentSetting: true }),
+        },
+        { type: 'divider' as const },
+        {
+          icon: <Icon icon={ShapesUploadIcon} />,
+          key: 'publish',
+          label: t('publishToCommunity', { ns: 'setting' }),
+          onClick: handlePublishClick,
+        },
+        importMenuItem ? { type: 'divider' as const } : null,
+        importMenuItem,
+        { type: 'divider' as const },
+        {
+          danger: true,
+          icon: <Icon icon={Trash} />,
+          key: 'delete',
+          label: t('delete', { ns: 'common' }),
+          onClick: handleDelete,
+        },
+      ].filter(Boolean),
+    [handlePublishClick, handleDelete, t, importMenuItem],
   );
 
   return (

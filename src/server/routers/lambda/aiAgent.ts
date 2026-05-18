@@ -9,14 +9,15 @@ import {
 } from '@lobechat/types';
 import { TRPCError } from '@trpc/server';
 import debug from 'debug';
+import { and, eq } from 'drizzle-orm';
 import pMap from 'p-map';
 import { z } from 'zod';
 
 import { MessageModel } from '@/database/models/message';
 import { TaskModel } from '@/database/models/task';
-import { TaskTopicModel } from '@/database/models/taskTopic';
 import { ThreadModel } from '@/database/models/thread';
 import { TopicModel } from '@/database/models/topic';
+import { taskTopics, topics } from '@/database/schemas';
 import { authedProcedure, heteroAuthedProcedure, router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
 import { AgentRuntimeService } from '@/server/services/agentRuntime';
@@ -395,16 +396,21 @@ const HeteroFinishSchema = z.object({
 
 const aiAgentProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
 
   return opts.next({
     ctx: {
-      agentRuntimeService: new AgentRuntimeService(ctx.serverDB, ctx.userId),
-      aiAgentService: new AiAgentService(ctx.serverDB, ctx.userId),
-      aiChatService: new AiChatService(ctx.serverDB, ctx.userId),
-      heterogeneousAgentService: new HeterogeneousAgentService(ctx.serverDB, ctx.userId),
-      messageModel: new MessageModel(ctx.serverDB, ctx.userId),
-      threadModel: new ThreadModel(ctx.serverDB, ctx.userId),
-      topicModel: new TopicModel(ctx.serverDB, ctx.userId),
+      agentRuntimeService: new AgentRuntimeService(ctx.serverDB, ctx.userId, {
+        workspaceId: wsId,
+      }),
+      aiAgentService: new AiAgentService(ctx.serverDB, ctx.userId, { workspaceId: wsId }),
+      aiChatService: new AiChatService(ctx.serverDB, ctx.userId, wsId),
+      heterogeneousAgentService: new HeterogeneousAgentService(ctx.serverDB, ctx.userId, {
+        workspaceId: wsId,
+      }),
+      messageModel: new MessageModel(ctx.serverDB, ctx.userId, wsId),
+      threadModel: new ThreadModel(ctx.serverDB, ctx.userId, wsId),
+      topicModel: new TopicModel(ctx.serverDB, ctx.userId, wsId),
     },
   });
 });
@@ -412,15 +418,11 @@ const aiAgentProcedure = authedProcedure.use(serverDatabase).use(async (opts) =>
 // Dedicated procedure for hetero-agent ingest/finish endpoints.
 // Requires a `hetero-operation` JWT (4h expiry) — normal user tokens are rejected,
 // so only the sandbox/device that received the JWT from execAgent can call these.
-const heteroAgentProcedure = heteroAuthedProcedure.use(serverDatabase).use(async (opts) => {
-  const { ctx } = opts;
-
-  return opts.next({
-    ctx: {
-      heterogeneousAgentService: new HeterogeneousAgentService(ctx.serverDB, ctx.userId),
-    },
-  });
-});
+//
+// Note: workspaceId is not on `ctx` for this procedure (the JWT is server-to-server
+// and carries no workspace claim). Handlers must resolve wsId from the row keyed
+// by `topicId` and construct `HeterogeneousAgentService` per request.
+const heteroAgentProcedure = heteroAuthedProcedure.use(serverDatabase);
 
 export const aiAgentRouter = router({
   /**
@@ -1166,10 +1168,25 @@ export const aiAgentRouter = router({
     );
 
     try {
+      // Resolve workspaceId from the topic row so persistence writes land in
+      // the correct workspace scope. heteroAuthedProcedure carries no
+      // workspace claim, so we must look it up here per request. We bypass
+      // `TopicModel.findById` because it filters by workspace; here we need a
+      // workspace-agnostic lookup keyed only by topicId + userId.
+      const [topicRow] = await ctx.serverDB
+        .select({ workspaceId: topics.workspaceId })
+        .from(topics)
+        .where(and(eq(topics.id, topicId), eq(topics.userId, ctx.userId)))
+        .limit(1);
+      const wsId = topicRow?.workspaceId ?? undefined;
+      const heteroService = new HeterogeneousAgentService(ctx.serverDB, ctx.userId, {
+        workspaceId: wsId,
+      });
+
       // Zod's z.any() infers `data?: any`, but the wire shape always includes
       // a `data` field (may be null). Cast at the boundary instead of widening
       // the shared `AgentStreamEvent` type or the service signature.
-      await ctx.heterogeneousAgentService.heteroIngest({
+      await heteroService.heteroIngest({
         agentType,
         events: events as AgentStreamEvent[],
         operationId,
@@ -1198,7 +1215,19 @@ export const aiAgentRouter = router({
     log('heteroFinish: topic=%s op=%s type=%s result=%s', topicId, operationId, agentType, result);
 
     try {
-      await ctx.heterogeneousAgentService.heteroFinish({
+      // Resolve workspaceId from the topic row (heteroAuthedProcedure has no
+      // workspace claim) so persistence writes land in the correct scope.
+      const [topicRow] = await ctx.serverDB
+        .select({ workspaceId: topics.workspaceId })
+        .from(topics)
+        .where(and(eq(topics.id, topicId), eq(topics.userId, ctx.userId)))
+        .limit(1);
+      const wsId = topicRow?.workspaceId ?? undefined;
+      const heteroService = new HeterogeneousAgentService(ctx.serverDB, ctx.userId, {
+        workspaceId: wsId,
+      });
+
+      await heteroService.heteroFinish({
         agentType,
         error,
         operationId,
@@ -1220,15 +1249,22 @@ export const aiAgentRouter = router({
       // topic is already in a terminal state.
       const TERMINAL_TOPIC_STATUSES = new Set(['canceled', 'completed', 'failed', 'timeout']);
       try {
-        const taskTopicModel = new TaskTopicModel(ctx.serverDB, ctx.userId);
-        const taskTopic = await taskTopicModel.findByTopicId(topicId);
-        if (taskTopic && !TERMINAL_TOPIC_STATUSES.has(taskTopic.status)) {
-          const taskModel = new TaskModel(ctx.serverDB, ctx.userId);
-          const task = await taskModel.findById(taskTopic.taskId);
+        // System-level lookup: heteroFinish is a server-to-server callback from
+        // the CLI and doesn't carry a workspace context. Resolve the task topic
+        // (and downstream models) using the row's own `workspaceId`.
+        const [taskTopicRow] = await ctx.serverDB
+          .select()
+          .from(taskTopics)
+          .where(and(eq(taskTopics.topicId, topicId), eq(taskTopics.userId, ctx.userId)))
+          .limit(1);
+        if (taskTopicRow && !TERMINAL_TOPIC_STATUSES.has(taskTopicRow.status)) {
+          const wsId = taskTopicRow.workspaceId ?? undefined;
+          const taskModel = new TaskModel(ctx.serverDB, ctx.userId, wsId);
+          const task = await taskModel.findById(taskTopicRow.taskId);
           if (task) {
             const reason =
               result === 'success' ? 'done' : result === 'cancelled' ? 'interrupted' : 'error';
-            const taskLifecycle = new TaskLifecycleService(ctx.serverDB, ctx.userId);
+            const taskLifecycle = new TaskLifecycleService(ctx.serverDB, ctx.userId, wsId);
             await taskLifecycle.onTopicComplete({
               errorMessage: error?.message,
               operationId,

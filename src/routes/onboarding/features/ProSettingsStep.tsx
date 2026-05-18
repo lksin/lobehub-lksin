@@ -5,9 +5,9 @@ import { cssVar } from 'antd-style';
 import { Undo2Icon } from 'lucide-react';
 import { memo, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import ModelSelect from '@/features/ModelSelect';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import LobeMessage from '@/routes/onboarding/components/LobeMessage';
 import { serverConfigSelectors, useServerConfigStore } from '@/store/serverConfig';
 import { useUserStore } from '@/store/user';
@@ -21,7 +21,7 @@ interface ProSettingsStepProps {
 
 const ProSettingsStep = memo<ProSettingsStepProps>(({ onBack }) => {
   const { t } = useTranslation('onboarding');
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
 
   const enableKlavis = useServerConfigStore(serverConfigSelectors.enableKlavis);
 

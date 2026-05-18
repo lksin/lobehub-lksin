@@ -1,12 +1,12 @@
 import { useDebounce } from 'ahooks';
 import { useTheme as useNextThemesTheme } from 'next-themes';
 import { useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 
 import { isDesktop } from '@/const/version';
 import { type SearchResult } from '@/database/repositories/search';
 import { useCreateNewModal } from '@/features/LibraryModal';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useGroupWizard } from '@/layout/GlobalProvider/GroupWizardProvider';
 import { lambdaClient } from '@/libs/trpc/client';
 import { useCreateMenuItems } from '@/routes/(main)/home/_layout/hooks';
@@ -42,7 +42,7 @@ export const useCommandMenu = () => {
     activeAgentId: agentId,
   } = useCommandMenuContext();
 
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const { setTheme } = useNextThemesTheme();
   const createAgent = useAgentStore((s) => s.createAgent);
   const refreshAgentList = useHomeStore((s) => s.refreshAgentList);

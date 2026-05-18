@@ -1,12 +1,12 @@
 import { ActionIcon, Flexbox } from '@lobehub/ui';
 import { Plus } from 'lucide-react';
 import { memo, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { DESKTOP_HEADER_ICON_SMALL_SIZE } from '@/const/layoutTokens';
 import NavHeader from '@/features/NavHeader';
 import ToggleRightPanelButton from '@/features/RightPanel/ToggleRightPanelButton';
 import WideScreenContainer from '@/features/WideScreenContainer';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useGlobalStore } from '@/store/global';
 import { systemStatusSelectors } from '@/store/global/selectors';
@@ -25,7 +25,7 @@ import TaskList from './TaskList';
 import TasksGroupConfig from './TasksGroupConfig';
 
 const AgentTasksPage = memo(() => {
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const isMobile = useIsMobile();
   const viewMode = useTaskStore(taskListSelectors.viewMode);
   const useFetchTaskList = useTaskStore((s) => s.useFetchTaskList);

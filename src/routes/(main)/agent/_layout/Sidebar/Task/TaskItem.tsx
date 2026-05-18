@@ -3,9 +3,9 @@
 import { Text } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import { memo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import NavItem from '@/features/NavPanel/components/NavItem';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import type { TaskGroupItem } from '@/store/task/slices/list/initialState';
 
 type TaskRow = TaskGroupItem['tasks'][number];
@@ -16,7 +16,7 @@ interface TaskItemProps {
 }
 
 const TaskItem = memo<TaskItemProps>(({ task, active }) => {
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
 
   const handleClick = useCallback(() => {
     navigate(`/task/${task.identifier}`);

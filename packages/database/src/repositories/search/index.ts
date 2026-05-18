@@ -14,6 +14,7 @@ import {
 } from '../../schemas';
 import type { LobeChatDatabase } from '../../type';
 import { sanitizeBm25Query } from '../../utils/bm25';
+import { buildUserMemoryWhere, buildWorkspaceWhere } from '../../utils/workspace';
 
 export type SearchResultType =
   | 'page'
@@ -186,10 +187,16 @@ export interface SearchOptions {
 export class SearchRepo {
   private userId: string;
   private db: LobeChatDatabase;
+  private workspaceId?: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: LobeChatDatabase, userId: string, workspaceId?: string) {
     this.userId = userId;
     this.db = db;
+    this.workspaceId = workspaceId;
+  }
+
+  private get scope() {
+    return { userId: this.userId, workspaceId: this.workspaceId };
   }
 
   /**
@@ -390,7 +397,7 @@ export class SearchRepo {
       .from(agents)
       .where(
         and(
-          eq(agents.userId, this.userId),
+          buildWorkspaceWhere(this.scope, agents),
           sql`(${agents.title} @@@ ${bm25Query} OR ${agents.description} @@@ ${bm25Query} OR ${agents.slug} @@@ ${bm25Query} OR ${agents.tags} @@@ ${bm25Query} OR ${agents.systemRole} @@@ ${bm25Query})`,
         ),
       )
@@ -444,10 +451,10 @@ export class SearchRepo {
         updatedAt: topics.updatedAt,
       })
       .from(topics)
-      .leftJoin(agents, and(eq(topics.agentId, agents.id), eq(agents.userId, this.userId)))
+      .leftJoin(agents, and(eq(topics.agentId, agents.id), buildWorkspaceWhere(this.scope, agents)))
       .where(
         and(
-          eq(topics.userId, this.userId),
+          buildWorkspaceWhere(this.scope, topics),
           agentId ? eq(topics.agentId, agentId) : undefined,
           sql`(${topics.title} @@@ ${bm25Query} OR ${topics.content} @@@ ${bm25Query} OR ${topics.description} @@@ ${bm25Query})`,
         ),
@@ -503,7 +510,7 @@ export class SearchRepo {
       .leftJoin(agents, eq(messages.agentId, agents.id))
       .where(
         and(
-          eq(messages.userId, this.userId),
+          buildWorkspaceWhere(this.scope, messages),
           ne(messages.role, 'tool'),
           agentId ? eq(messages.agentId, agentId) : undefined,
           sql`${messages.content} @@@ ${bm25Query}`,
@@ -554,7 +561,7 @@ export class SearchRepo {
       .leftJoin(knowledgeBaseFiles, eq(files.id, knowledgeBaseFiles.fileId))
       .where(
         and(
-          eq(files.userId, this.userId),
+          buildWorkspaceWhere(this.scope, files),
           ne(files.fileType, 'custom/document'),
           sql`${files.name} @@@ ${bm25Query}`,
         ),
@@ -599,7 +606,7 @@ export class SearchRepo {
       .from(documents)
       .where(
         and(
-          eq(documents.userId, this.userId),
+          buildWorkspaceWhere(this.scope, documents),
           eq(documents.fileType, DOCUMENT_FOLDER_TYPE),
           sql`(${documents.title} @@@ ${bm25Query} OR ${documents.slug} @@@ ${bm25Query} OR ${documents.description} @@@ ${bm25Query})`,
         ),
@@ -641,7 +648,7 @@ export class SearchRepo {
       .from(documents)
       .where(
         and(
-          eq(documents.userId, this.userId),
+          buildWorkspaceWhere(this.scope, documents),
           eq(documents.fileType, 'custom/document'),
           sql`(${documents.title} @@@ ${bm25Query} OR ${documents.slug} @@@ ${bm25Query} OR ${documents.content} @@@ ${bm25Query})`,
         ),
@@ -691,7 +698,7 @@ export class SearchRepo {
       .from(documents)
       .where(
         and(
-          eq(documents.userId, this.userId),
+          buildWorkspaceWhere(this.scope, documents),
           eq(documents.fileType, 'custom/document'),
           inArray(documents.knowledgeBaseId, knowledgeBaseIds),
           sql`(${documents.title} @@@ ${bm25Query} OR ${documents.slug} @@@ ${bm25Query} OR ${documents.content} @@@ ${bm25Query})`,
@@ -729,7 +736,7 @@ export class SearchRepo {
       .from(userMemories)
       .where(
         and(
-          eq(userMemories.userId, this.userId),
+          buildUserMemoryWhere(this.scope, userMemories),
           sql`(${userMemories.title} @@@ ${bm25Query} OR ${userMemories.summary} @@@ ${bm25Query} OR ${userMemories.details} @@@ ${bm25Query})`,
         ),
       )
@@ -768,7 +775,7 @@ export class SearchRepo {
       .from(chatGroups)
       .where(
         and(
-          eq(chatGroups.userId, this.userId),
+          buildWorkspaceWhere(this.scope, chatGroups),
           sql`(${chatGroups.title} @@@ ${bm25Query} OR ${chatGroups.description} @@@ ${bm25Query})`,
         ),
       )
@@ -810,7 +817,7 @@ export class SearchRepo {
       .from(knowledgeBases)
       .where(
         and(
-          eq(knowledgeBases.userId, this.userId),
+          buildWorkspaceWhere(this.scope, knowledgeBases),
           sql`(${knowledgeBases.name} @@@ ${bm25Query} OR ${knowledgeBases.description} @@@ ${bm25Query})`,
         ),
       )

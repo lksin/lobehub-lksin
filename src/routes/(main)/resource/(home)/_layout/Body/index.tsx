@@ -2,15 +2,15 @@ import { AccordionItem, ActionIcon, Text } from '@lobehub/ui';
 import { PlusIcon } from 'lucide-react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import { useCreateNewModal } from '@/features/LibraryModal';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 
 import LibraryList from './LibraryList';
 
 const SidebarBody = memo<{ itemKey: string }>(({ itemKey }) => {
   const { t } = useTranslation('file');
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
 
   const { open } = useCreateNewModal();
 

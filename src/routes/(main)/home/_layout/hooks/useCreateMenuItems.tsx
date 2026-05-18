@@ -7,11 +7,11 @@ import type { ItemType } from 'antd/es/menu/interface';
 import { BotIcon, FileTextIcon, FolderCogIcon, FolderPlus } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
 
 import { useGroupTemplates } from '@/components/ChatGroupWizard/templates';
 import { DEFAULT_CHAT_GROUP_CHAT_CONFIG } from '@/const/settings';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useCreateHeteroAgent } from '@/hooks/useCreateHeteroAgent';
 import { useOptionalAgentModal } from '@/routes/(main)/home/_layout/Body/Agent/ModalProvider';
 import type { CreateAgentParams } from '@/services/agent';
@@ -36,7 +36,7 @@ export const useCreateMenuItems = () => {
   const { t } = useTranslation('chat');
   const { t: tFile } = useTranslation('file');
   const { message } = App.useApp();
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const groupTemplates = useGroupTemplates();
 
   const [storeCreateAgent] = useAgentStore((s) => [s.createAgent]);

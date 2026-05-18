@@ -3,8 +3,8 @@ import { App } from 'antd';
 import { CopyIcon, LinkIcon, MoreHorizontal, Trash } from 'lucide-react';
 import { memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useAppOrigin } from '@/hooks/useAppOrigin';
 import { useTaskStore } from '@/store/task';
 import { taskDetailSelectors } from '@/store/task/selectors';
@@ -12,7 +12,7 @@ import { taskDetailSelectors } from '@/store/task/selectors';
 const TaskDetailHeaderActions = memo(() => {
   const { t } = useTranslation(['chat', 'common']);
   const { modal, message } = App.useApp();
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const appOrigin = useAppOrigin();
   const taskId = useTaskStore(taskDetailSelectors.activeTaskId);
   const deleteTask = useTaskStore((s) => s.deleteTask);

@@ -7,9 +7,9 @@ import { Loader2, PinIcon } from 'lucide-react';
 import { type CSSProperties, type DragEvent } from 'react';
 import { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
 import NavItem from '@/features/NavPanel/components/NavItem';
+import WorkspaceLink from '@/features/Workspace/WorkspaceLink';
 import { usePrefetchAgent } from '@/hooks/usePrefetchAgent';
 import { useChatStore } from '@/store/chat';
 import { operationSelectors } from '@/store/chat/selectors';
@@ -205,7 +205,7 @@ const AgentItem = memo<AgentItemProps>(({ item, style, className, onNavigate }) 
   });
 
   return (
-    <Link
+    <WorkspaceLink
       aria-label={displayTitle}
       ref={setAnchor}
       to={agentUrl}
@@ -227,7 +227,7 @@ const AgentItem = memo<AgentItemProps>(({ item, style, className, onNavigate }) 
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
       />
-    </Link>
+    </WorkspaceLink>
   );
 });
 

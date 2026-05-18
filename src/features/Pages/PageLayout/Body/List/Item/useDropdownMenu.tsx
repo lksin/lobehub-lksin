@@ -4,10 +4,10 @@ import { App } from 'antd';
 import { CopyPlus, PanelTop, Pencil, Trash2 } from 'lucide-react';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import { isDesktop } from '@/const/version';
 import { pluginRegistry } from '@/features/Electron/titlebar/RecentlyViewed/plugins';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useElectronStore } from '@/store/electron';
 import { usePageStore } from '@/store/page';
 
@@ -22,7 +22,7 @@ export const useDropdownMenu = ({
 }: ActionProps): (() => MenuProps['items']) => {
   const { t } = useTranslation(['common', 'file']);
   const { message, modal } = App.useApp();
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const addTab = useElectronStore((s) => s.addTab);
   const removePage = usePageStore((s) => s.removePage);
   const duplicatePage = usePageStore((s) => s.duplicatePage);

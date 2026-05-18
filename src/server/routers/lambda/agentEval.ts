@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import debug from 'debug';
 import { z } from 'zod';
 
+import { wsCompatProcedure } from '@/business/server/trpc-middlewares/workspaceAuth';
 import {
   AgentEvalBenchmarkModel,
   AgentEvalDatasetModel,
@@ -10,7 +11,7 @@ import {
   AgentEvalRunTopicModel,
   AgentEvalTestCaseModel,
 } from '@/database/models/agentEval';
-import { authedProcedure, router } from '@/libs/trpc/lambda';
+import { router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
 import { AgentEvalRunService } from '@/server/services/agentEvalRun';
 import { FileService } from '@/server/services/file';
@@ -52,17 +53,18 @@ const evalRunInputConfigSchema = z.object({
 
 const log = debug('lobe-lambda-router:agent-eval');
 
-const agentEvalProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
+const agentEvalProcedure = wsCompatProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
 
   return opts.next({
     ctx: {
-      benchmarkModel: new AgentEvalBenchmarkModel(ctx.serverDB, ctx.userId),
-      datasetModel: new AgentEvalDatasetModel(ctx.serverDB, ctx.userId),
-      runModel: new AgentEvalRunModel(ctx.serverDB, ctx.userId),
-      runService: new AgentEvalRunService(ctx.serverDB, ctx.userId),
-      runTopicModel: new AgentEvalRunTopicModel(ctx.serverDB, ctx.userId),
-      testCaseModel: new AgentEvalTestCaseModel(ctx.serverDB, ctx.userId),
+      benchmarkModel: new AgentEvalBenchmarkModel(ctx.serverDB, ctx.userId, wsId),
+      datasetModel: new AgentEvalDatasetModel(ctx.serverDB, ctx.userId, wsId),
+      runModel: new AgentEvalRunModel(ctx.serverDB, ctx.userId, wsId),
+      runService: new AgentEvalRunService(ctx.serverDB, ctx.userId, wsId),
+      runTopicModel: new AgentEvalRunTopicModel(ctx.serverDB, ctx.userId, wsId),
+      testCaseModel: new AgentEvalTestCaseModel(ctx.serverDB, ctx.userId, wsId),
       fileService: new FileService(ctx.serverDB, ctx.userId),
     },
   });
@@ -758,7 +760,11 @@ export const agentEvalRouter = router({
         });
       }
 
-      const service = new AgentEvalRunService(ctx.serverDB, ctx.userId);
+      const service = new AgentEvalRunService(
+        ctx.serverDB,
+        ctx.userId,
+        ctx.workspaceId ?? undefined,
+      );
       await service.abortRun(input.id);
 
       return { success: true };

@@ -6,12 +6,16 @@ import HomePageTracker from '@/components/Analytics/HomePageTracker';
 import PageTitle from '@/components/PageTitle';
 import NavHeader from '@/features/NavHeader';
 import WideScreenContainer from '@/features/WideScreenContainer';
+import { useWorkspaceStore, workspaceSelectors } from '@/store/workspace';
 
 import HomeContent from './features';
 
 const Home: FC = () => {
   const { pathname } = useLocation();
-  const isHomeRoute = pathname === '/';
+  const activeSlug = useWorkspaceStore((s) => workspaceSelectors.activeWorkspace(s)?.slug ?? null);
+  const isHomeRoute =
+    pathname === '/' ||
+    (!!activeSlug && (pathname === `/${activeSlug}` || pathname === `/${activeSlug}/`));
 
   return (
     <>

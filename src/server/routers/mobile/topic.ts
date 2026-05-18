@@ -1,16 +1,19 @@
 import { z } from 'zod';
 
+import { wsCompatProcedure } from '@/business/server/trpc-middlewares/workspaceAuth';
 import { TopicModel } from '@/database/models/topic';
 import { getServerDB } from '@/database/server';
-import { authedProcedure, publicProcedure, router } from '@/libs/trpc/lambda';
+import { publicProcedure, router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
 import { type BatchTaskResult } from '@/types/service';
 
-const topicProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
+const topicProcedure = wsCompatProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
 
   return opts.next({
-    ctx: { topicModel: new TopicModel(ctx.serverDB, ctx.userId) },
+    ctx: {
+      topicModel: new TopicModel(ctx.serverDB, ctx.userId, ctx.workspaceId ?? undefined),
+    },
   });
 });
 
@@ -104,7 +107,7 @@ export const topicRouter = router({
       if (!ctx.userId) return [];
 
       const serverDB = await getServerDB();
-      const topicModel = new TopicModel(serverDB, ctx.userId);
+      const topicModel = new TopicModel(serverDB, ctx.userId, ctx.workspaceId ?? undefined);
 
       return topicModel.query(input);
     }),

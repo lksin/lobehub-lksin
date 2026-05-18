@@ -27,9 +27,9 @@ import {
 import type { ReactNode } from 'react';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import DevModal from '@/features/PluginDevModal';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useCheckPluginsIsInstalled } from '@/hooks/useCheckPluginsIsInstalled';
 import { useFetchInstalledPlugins } from '@/hooks/useFetchInstalledPlugins';
 import { useAgentStore } from '@/store/agent';
@@ -379,7 +379,7 @@ const styles = createStaticStyles(({ css }) => ({
 export const useControls = () => {
   const { t } = useTranslation('setting');
   const agentId = useAgentId();
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const { updateAgentChatConfig } = useUpdateAgentConfig();
   const [pinnedOpen, setPinnedOpen] = useState(true);
   const [autoOpen, setAutoOpen] = useState(true);

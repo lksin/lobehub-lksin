@@ -3,9 +3,10 @@
 import { useWatchBroadcast } from '@lobechat/electron-client-ipc';
 import { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { pluginRegistry } from '@/features/Electron/titlebar/RecentlyViewed/plugins';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useElectronStore } from '@/store/electron';
 
 import { getCachedDataForReference } from './cachedData';
@@ -17,7 +18,7 @@ import { getRouteMetadata } from './routeMetadata';
  */
 export const useNavigationHistory = () => {
   const { t } = useTranslation('electron');
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const location = useLocation();
 
   // Get store state and actions

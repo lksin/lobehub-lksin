@@ -6,9 +6,9 @@ import { createStaticStyles } from 'antd-style';
 import { ChevronDownIcon } from 'lucide-react';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import urlJoin from 'url-join';
 
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { chatGroupService } from '@/services/chatGroup';
 import { discoverService } from '@/services/discover';
 import { useAgentGroupStore } from '@/store/agentGroup';
@@ -44,7 +44,7 @@ const AddGroupAgent = memo<{ mobile?: boolean }>(() => {
   const [isLoading, setIsLoading] = useState(false);
   const { message, modal } = App.useApp();
   const { t } = useTranslation('discover');
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const loadGroups = useAgentGroupStore((s) => s.loadGroups);
 
   const meta = {
@@ -118,7 +118,6 @@ const AddGroupAgent = memo<{ mobile?: boolean }>(() => {
       };
       // Filter out null/undefined values
       supervisorConfig = Object.fromEntries(
-         
         Object.entries(rawConfig).filter(([_, v]) => v != null),
       );
     }

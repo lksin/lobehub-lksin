@@ -3,10 +3,10 @@ import { cssVar } from 'antd-style';
 import { Loader2Icon } from 'lucide-react';
 import { type CSSProperties } from 'react';
 import React, { memo, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import RepoIcon from '@/components/LibIcon';
 import NavItem from '@/features/NavPanel/components/NavItem';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useResourceManagerStore } from '@/routes/(main)/resource/features/store';
 import { useKnowledgeBaseStore } from '@/store/library';
 
@@ -26,7 +26,7 @@ interface KnowledgeBaseItemProps {
 const KnowledgeBaseItem = memo<KnowledgeBaseItemProps>(
   ({ id, name, description, active, style, className }) => {
     const setLibraryId = useResourceManagerStore((s) => s.setLibraryId);
-    const navigate = useNavigate();
+    const navigate = useWorkspaceAwareNavigate();
 
     const [editing, isLoading] = useKnowledgeBaseStore((s) => [
       s.knowledgeBaseRenamingId === id,

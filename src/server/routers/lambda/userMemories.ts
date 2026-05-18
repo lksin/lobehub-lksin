@@ -235,6 +235,7 @@ const normalizeEmbeddable = (value?: string | null): string | undefined => {
 
 const memoryProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
   const userSettingsRow = await ctx.serverDB.query.userSettings.findFirst({
     columns: { memory: true },
     where: eq(userSettings.id, ctx.userId),
@@ -247,10 +248,10 @@ const memoryProcedure = authedProcedure.use(serverDatabase).use(async (opts) => 
 
   return opts.next({
     ctx: {
-      activityModel: new UserMemoryActivityModel(ctx.serverDB, ctx.userId),
-      experienceModel: new UserMemoryExperienceModel(ctx.serverDB, ctx.userId),
-      identityModel: new UserMemoryIdentityModel(ctx.serverDB, ctx.userId),
-      memoryModel: new UserMemoryModel(ctx.serverDB, ctx.userId),
+      activityModel: new UserMemoryActivityModel(ctx.serverDB, ctx.userId, wsId),
+      experienceModel: new UserMemoryExperienceModel(ctx.serverDB, ctx.userId, wsId),
+      identityModel: new UserMemoryIdentityModel(ctx.serverDB, ctx.userId, wsId),
+      memoryModel: new UserMemoryModel(ctx.serverDB, ctx.userId, wsId),
       memoryEffort,
     },
   });

@@ -18,13 +18,13 @@ import {
 } from 'lucide-react';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import { openRenameModal } from '@/components/RenameModal';
 import { SESSION_CHAT_TOPIC_URL } from '@/const/url';
 import { isDesktop } from '@/const/version';
 import { pluginRegistry } from '@/features/Electron/titlebar/RecentlyViewed/plugins';
 import { openShareModal } from '@/features/ShareModal';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useAppOrigin } from '@/hooks/useAppOrigin';
 import { useAgentStore } from '@/store/agent';
 import { useChatStore } from '@/store/chat';
@@ -46,7 +46,7 @@ export const useTopicItemDropdownMenu = ({
 }: TopicItemDropdownMenuProps) => {
   const { t } = useTranslation(['topic', 'common']);
   const { modal, message } = App.useApp();
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
 
   const openTopicInNewWindow = useGlobalStore((s) => s.openTopicInNewWindow);
   const activeAgentId = useAgentStore((s) => s.activeAgentId);

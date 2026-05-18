@@ -8,8 +8,8 @@ import { createStyles } from 'antd-style';
 import { CheckCircle2, KeyRound, X } from 'lucide-react';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { lambdaClient, lambdaQuery } from '@/libs/trpc/client';
 
 // Fixed cred key for Claude Code OAuth token — never changes
@@ -270,7 +270,7 @@ const CloudHeterogeneousConfig = memo<CloudHeterogeneousConfigProps>(
   ({ provider, onEnvChange }) => {
     const { t } = useTranslation('setting');
     const { styles } = useStyles();
-    const navigate = useNavigate();
+    const navigate = useWorkspaceAwareNavigate();
 
     const currentEnv = provider.env ?? {};
     const storedGithubCredKey = currentEnv.GITHUB_CRED_KEY ?? '';

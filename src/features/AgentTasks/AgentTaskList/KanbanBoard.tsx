@@ -14,8 +14,8 @@ import { createStaticStyles } from 'antd-style';
 import { ClipboardCheckIcon } from 'lucide-react';
 import { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useGlobalStore } from '@/store/global';
 import { systemStatusSelectors } from '@/store/global/selectors';
 import { useTaskStore } from '@/store/task';
@@ -74,7 +74,7 @@ const optimisticMoveTask = (
 
 const KanbanBoard = memo(() => {
   const { t } = useTranslation('chat');
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
 
   const useFetchTaskGroupList = useTaskStore((s) => s.useFetchTaskGroupList);
   useFetchTaskGroupList({ allAgents: true });

@@ -2,11 +2,11 @@
 
 import { type ReactNode, useCallback } from 'react';
 import { createContext, memo, use, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { ChatGroupWizard } from '@/components/ChatGroupWizard';
 import { MemberSelectionModal } from '@/components/MemberSelectionModal';
 import EditingPopover from '@/features/EditingPopover';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { CreateAgentModal } from '@/routes/(main)/home/_layout/hooks/useCreateModal';
 import { useAgentStore } from '@/store/agent';
 import { builtinAgentSelectors } from '@/store/agent/selectors';
@@ -66,7 +66,7 @@ interface CreateModalRendererProps {
 }
 
 const CreateModalRenderer = memo<CreateModalRendererProps>(({ open, type, groupId, onClose }) => {
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const inboxAgentId = useAgentStore(builtinAgentSelectors.inboxAgentId);
   const storeCreateAgent = useAgentStore((s) => s.createAgent);
   const refreshAgentList = useHomeStore((s) => s.refreshAgentList);

@@ -13,11 +13,13 @@ import { type MenuProps } from '@/components/Menu';
 import { DEFAULT_DESKTOP_HOTKEY_CONFIG } from '@/const/desktop';
 import { OFFICIAL_URL } from '@/const/url';
 import DataImporter from '@/features/DataImporter';
+import WorkspaceLink from '@/features/Workspace/WorkspaceLink';
 import { useNavLayout } from '@/hooks/useNavLayout';
 import { usePlatform } from '@/hooks/usePlatform';
 import { featureFlagsSelectors, useServerConfigStore } from '@/store/serverConfig';
 import { useUserStore } from '@/store/user';
 import { authSelectors } from '@/store/user/selectors';
+import { useWorkspaceStore, workspaceSelectors } from '@/store/workspace';
 
 import { useNewVersion } from './useNewVersion';
 
@@ -56,12 +58,21 @@ export const useMenu = () => {
   const { userPanel } = useNavLayout();
   const businessMenuItems = useBusinessMenuItems(isLogin);
   const { isIOS, isAndroid } = usePlatform();
+  const activeWorkspaceSlug = useWorkspaceStore(
+    (s) => workspaceSelectors.activeWorkspace(s)?.slug ?? null,
+  );
 
   const downloadUrl = useMemo(() => {
     if (isIOS) return DOWNLOAD_URL.ios;
     if (isAndroid) return DOWNLOAD_URL.android;
     return DOWNLOAD_URL.default;
   }, [isIOS, isAndroid]);
+
+  // In workspace context, route Settings to the workspace's settings root —
+  // the route's index redirect (`/:slug/settings → /:slug/settings/general`)
+  // handles tab landing, keeping this hook URL-agnostic. Personal context
+  // falls back to user settings.
+  const settingsHref = activeWorkspaceSlug ? `/${activeWorkspaceSlug}/settings` : '/settings';
 
   const settings: MenuProps['items'] = [
     {
@@ -73,7 +84,7 @@ export const useMenu = () => {
       icon: <Icon icon={Settings2} />,
       key: 'setting',
       label: (
-        <Link to="/settings">
+        <Link to={settingsHref}>
           <NewVersionBadge showBadge={hasNewVersion}>{t('userPanel.setting')}</NewVersionBadge>
         </Link>
       ),
@@ -83,7 +94,7 @@ export const useMenu = () => {
           {
             icon: <Icon icon={BrainCircuit} />,
             key: 'memory',
-            label: <Link to="/memory">{t('tab.memory')}</Link>,
+            label: <WorkspaceLink to="/memory">{t('tab.memory')}</WorkspaceLink>,
           },
         ]
       : []),

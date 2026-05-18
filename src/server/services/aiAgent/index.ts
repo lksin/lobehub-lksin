@@ -248,22 +248,29 @@ export class AiAgentService {
   private readonly marketService: MarketService;
   private readonly klavisService: KlavisService;
 
+  private readonly workspaceId?: string;
+
   constructor(
     db: LobeChatDatabase,
     userId: string,
-    options?: { runtimeOptions?: AgentRuntimeServiceOptions },
+    options?: { runtimeOptions?: AgentRuntimeServiceOptions; workspaceId?: string },
   ) {
     this.userId = userId;
     this.db = db;
-    this.agentDocumentsService = new AgentDocumentsService(db, userId);
-    this.agentModel = new AgentModel(db, userId);
-    this.agentService = new AgentService(db, userId);
-    this.messageModel = new MessageModel(db, userId);
-    this.pluginModel = new PluginModel(db, userId);
-    this.taskModel = new TaskModel(db, userId);
-    this.threadModel = new ThreadModel(db, userId);
-    this.topicModel = new TopicModel(db, userId);
-    this.agentRuntimeService = new AgentRuntimeService(db, userId, options?.runtimeOptions);
+    this.workspaceId = options?.workspaceId;
+    const wsId = this.workspaceId;
+    this.agentDocumentsService = new AgentDocumentsService(db, userId, wsId);
+    this.agentModel = new AgentModel(db, userId, wsId);
+    this.agentService = new AgentService(db, userId, wsId);
+    this.messageModel = new MessageModel(db, userId, wsId);
+    this.pluginModel = new PluginModel(db, userId, wsId);
+    this.taskModel = new TaskModel(db, userId, wsId);
+    this.threadModel = new ThreadModel(db, userId, wsId);
+    this.topicModel = new TopicModel(db, userId, wsId);
+    this.agentRuntimeService = new AgentRuntimeService(db, userId, {
+      ...options?.runtimeOptions,
+      workspaceId: wsId,
+    });
     this.marketService = new MarketService({ userInfo: { userId } });
     this.klavisService = new KlavisService({ db, userId });
   }
@@ -677,7 +684,9 @@ export class AiAgentService {
       assistantMessageRef.current = assistantMsg.id;
 
       // Read resume session id for next-turn continuity.
-      const heteroService = new HeterogeneousAgentService(this.db, this.userId);
+      const heteroService = new HeterogeneousAgentService(this.db, this.userId, {
+        workspaceId: this.workspaceId,
+      });
       const resumeSessionId = await heteroService.getHeterogeneousResumeSessionId(topicId);
       // Sign an operation-scoped JWT so the CLI can authenticate against
       // heteroIngest / heteroFinish without full user credentials.
@@ -1962,6 +1971,7 @@ export class AiAgentService {
         userId: this.userId,
         userInterventionConfig,
         userMemory,
+        workspaceId: this.workspaceId,
       });
 
       log('execAgent: created operation %s (autoStarted: %s)', operationId, result.autoStarted);

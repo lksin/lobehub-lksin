@@ -95,7 +95,11 @@ const messengerProcedure = authedProcedure.use(serverDatabase).use(async (opts) 
   const { ctx } = opts;
   return opts.next({
     ctx: {
-      messengerLinkModel: new MessengerAccountLinkModel(ctx.serverDB, ctx.userId),
+      messengerLinkModel: new MessengerAccountLinkModel(
+        ctx.serverDB,
+        ctx.userId,
+        ctx.workspaceId ?? undefined,
+      ),
     },
   });
 });

@@ -37,15 +37,16 @@ const toIsoString = (value?: Date | null) => (value ? value.toISOString() : unde
 
 const agentEvalExternalProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
 
   return opts.next({
     ctx: {
-      datasetModel: new AgentEvalDatasetModel(ctx.serverDB, ctx.userId),
-      runModel: new AgentEvalRunModel(ctx.serverDB, ctx.userId),
-      runService: new AgentEvalRunService(ctx.serverDB, ctx.userId),
-      runTopicModel: new AgentEvalRunTopicModel(ctx.serverDB, ctx.userId),
-      testCaseModel: new AgentEvalTestCaseModel(ctx.serverDB, ctx.userId),
-      threadModel: new ThreadModel(ctx.serverDB, ctx.userId),
+      datasetModel: new AgentEvalDatasetModel(ctx.serverDB, ctx.userId, wsId),
+      runModel: new AgentEvalRunModel(ctx.serverDB, ctx.userId, wsId),
+      runService: new AgentEvalRunService(ctx.serverDB, ctx.userId, wsId),
+      runTopicModel: new AgentEvalRunTopicModel(ctx.serverDB, ctx.userId, wsId),
+      testCaseModel: new AgentEvalTestCaseModel(ctx.serverDB, ctx.userId, wsId),
+      threadModel: new ThreadModel(ctx.serverDB, ctx.userId, wsId),
     },
   });
 });

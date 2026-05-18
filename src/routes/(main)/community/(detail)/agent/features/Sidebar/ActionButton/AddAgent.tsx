@@ -6,9 +6,9 @@ import { createStaticStyles } from 'antd-style';
 import { ChevronDownIcon } from 'lucide-react';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import { SESSION_CHAT_URL } from '@/const/url';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { agentService } from '@/services/agent';
 import { discoverService } from '@/services/discover';
 import { useAgentStore } from '@/store/agent';
@@ -38,7 +38,7 @@ const AddAgent = memo<{ mobile?: boolean }>(({ mobile }) => {
   const createAgent = useAgentStore((s) => s.createAgent);
   const refreshAgentList = useHomeStore((s) => s.refreshAgentList);
   const { message, modal } = App.useApp();
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const { t } = useTranslation('discover');
 
   const meta = {

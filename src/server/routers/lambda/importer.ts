@@ -10,10 +10,11 @@ import { type ImporterEntryData, type ImportResultData } from '@/types/importer'
 
 const importProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
 
   return opts.next({
     ctx: {
-      dataImporterService: new DataImporterRepos(ctx.serverDB, ctx.userId),
+      dataImporterService: new DataImporterRepos(ctx.serverDB, ctx.userId, wsId),
       fileService: new FileService(ctx.serverDB, ctx.userId),
     },
   });

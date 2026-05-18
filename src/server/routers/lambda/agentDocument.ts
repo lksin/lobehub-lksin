@@ -6,10 +6,11 @@ import {
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
+import { wsCompatProcedure } from '@/business/server/trpc-middlewares/workspaceAuth';
 import { AgentDocumentModel } from '@/database/models/agentDocuments';
 import { TopicModel } from '@/database/models/topic';
 import { TopicDocumentModel } from '@/database/models/topicDocument';
-import { authedProcedure, router } from '@/libs/trpc/lambda';
+import { router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
 import { AgentDocumentsService } from '@/server/services/agentDocuments';
 import { emitAgentDocumentToolOutcomeSafely } from '@/server/services/agentDocuments/toolOutcome';
@@ -142,16 +143,17 @@ const liteXMLOperationSchema = z.union([
   }),
 ]);
 
-const agentDocumentProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
+const agentDocumentProcedure = wsCompatProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
 
   return opts.next({
     ctx: {
       agentDocumentModel: new AgentDocumentModel(ctx.serverDB, ctx.userId),
-      agentDocumentService: new AgentDocumentsService(ctx.serverDB, ctx.userId),
+      agentDocumentService: new AgentDocumentsService(ctx.serverDB, ctx.userId, wsId),
       agentDocumentVfsService: new AgentDocumentVfsService(ctx.serverDB, ctx.userId),
-      topicModel: new TopicModel(ctx.serverDB, ctx.userId),
-      topicDocumentModel: new TopicDocumentModel(ctx.serverDB, ctx.userId),
+      topicModel: new TopicModel(ctx.serverDB, ctx.userId, wsId),
+      topicDocumentModel: new TopicDocumentModel(ctx.serverDB, ctx.userId, wsId),
     },
   });
 });

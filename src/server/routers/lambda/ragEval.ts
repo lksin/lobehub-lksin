@@ -30,14 +30,15 @@ import { FileService } from '@/server/services/file';
 
 const ragEvalProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
 
   return opts.next({
     ctx: {
-      datasetModel: new EvalDatasetModel(ctx.serverDB, ctx.userId),
-      fileModel: new FileModel(ctx.serverDB, ctx.userId),
-      datasetRecordModel: new EvalDatasetRecordModel(ctx.serverDB, ctx.userId),
-      evaluationModel: new EvalEvaluationModel(ctx.serverDB, ctx.userId),
-      evaluationRecordModel: new EvaluationRecordModel(ctx.serverDB, ctx.userId),
+      datasetModel: new EvalDatasetModel(ctx.serverDB, ctx.userId, wsId),
+      fileModel: new FileModel(ctx.serverDB, ctx.userId, wsId),
+      datasetRecordModel: new EvalDatasetRecordModel(ctx.serverDB, ctx.userId, wsId),
+      evaluationModel: new EvalEvaluationModel(ctx.serverDB, ctx.userId, wsId),
+      evaluationRecordModel: new EvaluationRecordModel(ctx.serverDB, ctx.userId, wsId),
       fileService: new FileService(ctx.serverDB, ctx.userId),
     },
   });

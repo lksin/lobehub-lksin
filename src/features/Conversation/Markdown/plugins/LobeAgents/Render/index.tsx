@@ -5,7 +5,8 @@ import { Avatar, Flexbox } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { ArrowRight } from 'lucide-react';
 import { memo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 
 import { type MarkdownElementProps } from '../../type';
 
@@ -53,7 +54,7 @@ interface LobeAgentsProps extends MarkdownElementProps {
 
 const Render = memo<LobeAgentsProps>(
   ({ identifier, title, description, avatar, backgroundColor }) => {
-    const navigate = useNavigate();
+    const navigate = useWorkspaceAwareNavigate();
 
     const handleClick = useCallback(() => {
       if (!identifier) return;
@@ -63,13 +64,7 @@ const Render = memo<LobeAgentsProps>(
     if (!identifier) return null;
 
     return (
-      <Flexbox
-        align={'center'}
-        className={styles.card}
-        gap={12}
-        horizontal
-        onClick={handleClick}
-      >
+      <Flexbox horizontal align={'center'} className={styles.card} gap={12} onClick={handleClick}>
         <Avatar
           avatar={avatar || '🤖'}
           background={backgroundColor}

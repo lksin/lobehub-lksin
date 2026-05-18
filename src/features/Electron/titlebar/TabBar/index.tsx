@@ -6,10 +6,10 @@ import { cx } from 'antd-style';
 import { Plus } from 'lucide-react';
 import { startTransition, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import { usePluginContext } from '@/features/Electron/titlebar/RecentlyViewed/hooks/usePluginContext';
 import { pluginRegistry } from '@/features/Electron/titlebar/RecentlyViewed/plugins';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { electronSystemService } from '@/services/electron/system';
 import { useElectronStore } from '@/store/electron';
 import { electronStylish } from '@/styles/electron';
@@ -23,7 +23,7 @@ const TAB_GAP = 0;
 
 const TabBar = () => {
   const styles = useStyles;
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const { t } = useTranslation('electron');
   const viewportRef = useRef<HTMLDivElement>(null);
   const { tabs, activeTabId } = useResolvedTabs();

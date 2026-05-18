@@ -7,8 +7,8 @@ import { ChevronDown, ListTodoIcon, PlayCircle, Plus } from 'lucide-react';
 import type { Key, MouseEvent } from 'react';
 import { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { taskService } from '@/services/task';
 import { useTaskStore } from '@/store/task';
 import { taskDetailSelectors } from '@/store/task/selectors';
@@ -127,7 +127,7 @@ const toTreeData = (tree: TaskTreeNode[]): DataNode[] => {
 const TaskSubtasks = memo(() => {
   const { t } = useTranslation('chat');
   const { message, modal } = App.useApp();
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const agentId = useTaskStore(taskDetailSelectors.activeTaskAgentId);
   const subtasks = useTaskStore(taskDetailSelectors.activeTaskSubtasks);
   const taskId = useTaskStore(taskDetailSelectors.activeTaskId);

@@ -4,7 +4,7 @@ import { Trash2Icon } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import { memo, useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useMatch } from 'react-router-dom';
 import type { KeyedMutator } from 'swr';
 
 import type {
@@ -13,6 +13,7 @@ import type {
   ExplorerTreeNode,
 } from '@/features/ExplorerTree';
 import { ExplorerTree, FOLDER_ICON_CSS } from '@/features/ExplorerTree';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useChatStore } from '@/store/chat';
 
 import DocumentExplorerToolbar from './DocumentExplorerToolbar';
@@ -58,7 +59,7 @@ interface Props {
 
 const DocumentExplorerTree = memo<Props>(({ agentId, data, mutate, style }) => {
   const { t } = useTranslation(['chat', 'common']);
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const pageMatch = useMatch(PAGE_ROUTE_PATTERN);
   const openDocument = useChatStore((s) => s.openDocument);
   const treeRef = useRef<ExplorerTreeHandle | null>(null);

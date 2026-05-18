@@ -1,16 +1,18 @@
 import { type LobeTool } from '@lobechat/types';
 import { z } from 'zod';
 
+import { wsCompatProcedure } from '@/business/server/trpc-middlewares/workspaceAuth';
 import { PluginModel } from '@/database/models/plugin';
 import { getServerDB } from '@/database/server';
-import { authedProcedure, publicProcedure, router } from '@/libs/trpc/lambda';
+import { publicProcedure, router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
 
-const pluginProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
+const pluginProcedure = wsCompatProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
 
   return opts.next({
-    ctx: { pluginModel: new PluginModel(ctx.serverDB, ctx.userId) },
+    ctx: { pluginModel: new PluginModel(ctx.serverDB, ctx.userId, wsId) },
   });
 });
 
@@ -70,7 +72,7 @@ export const pluginRouter = router({
     if (!ctx.userId) return [];
 
     const serverDB = await getServerDB();
-    const pluginModel = new PluginModel(serverDB, ctx.userId);
+    const pluginModel = new PluginModel(serverDB, ctx.userId, ctx.workspaceId ?? undefined);
 
     return pluginModel.query();
   }),

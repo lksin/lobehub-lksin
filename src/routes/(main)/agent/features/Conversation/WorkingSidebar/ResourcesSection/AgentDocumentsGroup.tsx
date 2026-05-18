@@ -8,7 +8,7 @@ import { FileTextIcon, FolderIcon, GlobeIcon, Trash2Icon } from 'lucide-react';
 import type { CSSProperties, MouseEvent } from 'react';
 import { memo, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useMatch } from 'react-router-dom';
 
 import { DocumentExplorerTree } from '@/features/AgentDocumentsExplorer';
 import {
@@ -17,6 +17,7 @@ import {
   isSkillBundleItem,
   isSkillIndexItem,
 } from '@/features/AgentDocumentsExplorer/types';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useClientDataSWR } from '@/libs/swr';
 import { agentDocumentService, agentDocumentSWRKeys } from '@/services/agentDocument';
 import { useAgentStore } from '@/store/agent';
@@ -121,7 +122,7 @@ const DocumentItem = memo<DocumentItemProps>(
     const openDocument = useChatStore((s) => s.openDocument);
     const closeDocument = useChatStore((s) => s.closeDocument);
     const portalDocumentId = useChatStore(chatPortalSelectors.portalDocumentId);
-    const navigate = useNavigate();
+    const navigate = useWorkspaceAwareNavigate();
     const pageMatch = useMatch(PAGE_ROUTE_PATTERN);
 
     const title = document.title || document.filename || '';

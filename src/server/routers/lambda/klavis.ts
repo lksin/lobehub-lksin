@@ -1,17 +1,19 @@
 import { type ToolManifest } from '@lobechat/types';
 import { z } from 'zod';
 
+import { wsCompatProcedure } from '@/business/server/trpc-middlewares/workspaceAuth';
 import { PluginModel } from '@/database/models/plugin';
 import { getKlavisClient } from '@/libs/klavis';
-import { authedProcedure, router } from '@/libs/trpc/lambda';
+import { router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
 
 /**
  * Klavis procedure with API key validation and database access
  */
-const klavisProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
+const klavisProcedure = wsCompatProcedure.use(serverDatabase).use(async (opts) => {
   const client = getKlavisClient();
-  const pluginModel = new PluginModel(opts.ctx.serverDB, opts.ctx.userId);
+  const wsId = opts.ctx.workspaceId ?? undefined;
+  const pluginModel = new PluginModel(opts.ctx.serverDB, opts.ctx.userId, wsId);
 
   return opts.next({
     ctx: { ...opts.ctx, klavisClient: client, pluginModel },

@@ -12,11 +12,12 @@ const log = debug('lobe-server:agent-notify-router');
 
 const agentNotifyProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
+  const wsId = ctx.workspaceId ?? undefined;
 
   return opts.next({
     ctx: {
-      aiAgentService: new AiAgentService(ctx.serverDB, ctx.userId),
-      topicModel: new TopicModel(ctx.serverDB, ctx.userId),
+      aiAgentService: new AiAgentService(ctx.serverDB, ctx.userId, { workspaceId: wsId }),
+      topicModel: new TopicModel(ctx.serverDB, ctx.userId, wsId),
     },
   });
 });

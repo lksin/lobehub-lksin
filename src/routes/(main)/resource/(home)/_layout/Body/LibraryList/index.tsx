@@ -3,11 +3,11 @@
 import { Flexbox } from '@lobehub/ui';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import { useCreateNewModal } from '@/features/LibraryModal';
 import EmptyNavItem from '@/features/NavPanel/components/EmptyNavItem';
 import SkeletonList from '@/features/NavPanel/components/SkeletonList';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useKnowledgeBaseStore } from '@/store/library';
 
 import Item from './Item';
@@ -20,7 +20,7 @@ const LibraryList = memo(() => {
   const useFetchKnowledgeBaseList = useKnowledgeBaseStore((s) => s.useFetchKnowledgeBaseList);
   const { data, isLoading } = useFetchKnowledgeBaseList();
 
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
 
   const { open } = useCreateNewModal();
 

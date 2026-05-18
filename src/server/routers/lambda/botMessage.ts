@@ -32,10 +32,11 @@ import { WechatMessageService } from '@/server/services/bot/platforms/wechat/ser
 const botMessageProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
   const gateKeeper = await KeyVaultsGateKeeper.initWithEnvKey();
+  const wsId = ctx.workspaceId ?? undefined;
 
   return opts.next({
     ctx: {
-      agentBotProviderModel: new AgentBotProviderModel(ctx.serverDB, ctx.userId, gateKeeper),
+      agentBotProviderModel: new AgentBotProviderModel(ctx.serverDB, ctx.userId, gateKeeper, wsId),
     },
   });
 });

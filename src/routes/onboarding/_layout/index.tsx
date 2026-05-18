@@ -7,11 +7,12 @@ import { Divider, Popconfirm } from 'antd';
 import { cx, useTheme } from 'antd-style';
 import { type FC, type MouseEvent, type PropsWithChildren, useCallback } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { ProductLogo } from '@/components/Branding';
 import LangButton from '@/features/User/UserPanel/LangButton';
 import ThemeButton from '@/features/User/UserPanel/ThemeButton';
+import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useServerConfigStore } from '@/store/serverConfig';
 import { useUserStore } from '@/store/user';
@@ -23,7 +24,7 @@ const OnBoardingContainer: FC<PropsWithChildren> = ({ children }) => {
   const theme = useTheme();
   const { t } = useTranslation(['onboarding', 'common']);
   const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const navigate = useWorkspaceAwareNavigate();
   const finishOnboarding = useUserStore((s) => s.finishOnboarding);
   const enableAgentOnboarding = useServerConfigStore((s) => s.featureFlags.enableAgentOnboarding);
   const serverConfigInit = useServerConfigStore((s) => s.serverConfigInit);
