@@ -645,9 +645,25 @@ export class AgentModel {
     // 4. Create the builtin agent with persist config.
     // Idempotent under concurrent callers: two parallel requests for the same
     // (userId, slug) both see no existing row and race to insert. Without
-    // `onConflictDoNothing`, the loser hits the `agents_slug_user_id_unique`
-    // constraint; with it, the loser's `.returning()` is empty and we re-read
-    // the row that won.
+    // `onConflictDoNothing`, the loser hits the slug-unique constraint; with
+    // it, the loser's `.returning()` is empty and we re-read the row that won.
+    //
+    // The conflict target is partitioned to match the two partial unique
+    // indexes (see `agents` schema): personal rows are unique by (slug, userId)
+    // and workspace rows are unique by (workspaceId, slug). The `where` clause
+    // is required so Postgres can infer the partial index as the arbiter
+    // (otherwise PG raises `42P10: no unique or exclusion constraint matching
+    // the ON CONFLICT specification`).
+    const conflictConfig = this.workspaceId
+      ? {
+          target: [agents.workspaceId, agents.slug],
+          where: sql`${agents.workspaceId} IS NOT NULL`,
+        }
+      : {
+          target: [agents.slug, agents.userId],
+          where: sql`${agents.workspaceId} IS NULL`,
+        };
+
     const result = await this.db
       .insert(agents)
       .values(
@@ -661,14 +677,14 @@ export class AgentModel {
           },
         ),
       )
-      .onConflictDoNothing({ target: [agents.slug, agents.userId] })
+      .onConflictDoNothing(conflictConfig)
       .returning();
 
     if (result[0]) return result[0];
 
     return (
       (await this.db.query.agents.findFirst({
-        where: and(eq(agents.slug, slug), eq(agents.userId, this.userId)),
+        where: and(eq(agents.slug, slug), this.ownership()),
       })) ?? null
     );
   };

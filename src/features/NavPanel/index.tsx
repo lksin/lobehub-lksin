@@ -1,9 +1,9 @@
 'use client';
 
 import { type PropsWithChildren, type ReactNode } from 'react';
-import { memo, useLayoutEffect, useSyncExternalStore } from 'react';
+import { memo, useLayoutEffect, useRef, useSyncExternalStore } from 'react';
 
-import Sidebar from '@/routes/(main)/home/_layout/Sidebar';
+import SidebarContent from '@/routes/(main)/home/_layout/SidebarContent';
 
 import { NavPanelDraggable } from './components/NavPanelDraggable';
 
@@ -42,8 +42,11 @@ const NavPanel = memo(() => {
     getNavPanelSnapshot,
   );
 
-  // Use home Content as fallback when no portal content is provided
-  const activeContent = panelContent || { key: FALLBACK_NAV_KEY, node: <Sidebar /> };
+  // Fallback renders the home sidebar's content directly — using `<Sidebar />`
+  // (the portal wrapper) here loops with the portal's unmount cleanup:
+  // mount fallback → portal sets snapshot → fallback unmounts → cleanup
+  // clears snapshot → mount fallback → …
+  const activeContent = panelContent || { key: FALLBACK_NAV_KEY, node: <SidebarContent /> };
 
   return (
     <>
@@ -72,6 +75,9 @@ interface NavPanelPortalProps extends PropsWithChildren {
 }
 
 export const NavPanelPortal = memo<NavPanelPortalProps>(({ children, navKey = 'default' }) => {
+  const navKeyRef = useRef(navKey);
+  navKeyRef.current = navKey;
+
   useLayoutEffect(() => {
     if (!children) return;
 
@@ -79,8 +85,22 @@ export const NavPanelPortal = memo<NavPanelPortalProps>(({ children, navKey = 'd
       key: navKey,
       node: children,
     });
-    // Intentionally keep previous content until new one mounts.
   }, [children, navKey]);
+
+  // Clear the snapshot on unmount if this portal still owns it. Without this,
+  // a route transition where the next layout's portal effect doesn't fire in
+  // the same commit (concurrent transitions, lazy boundaries, Fragment-key
+  // remounts) leaves the previous owner's snapshot in place — visible as a
+  // stale sidebar that may render empty under its new state (e.g. workspace
+  // settings sidebar after the active workspace is deleted).
+  useLayoutEffect(
+    () => () => {
+      if (currentSnapshot?.key === navKeyRef.current) {
+        setNavPanelSnapshot(null);
+      }
+    },
+    [],
+  );
 
   return null;
 });
