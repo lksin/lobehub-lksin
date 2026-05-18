@@ -2,6 +2,7 @@ import { index, integer, jsonb, pgTable, text, uuid } from 'drizzle-orm/pg-core'
 
 import { timestamps } from './_helpers';
 import { users } from './user';
+import { workspaces } from './workspace';
 
 export const asyncTasks = pgTable(
   'async_tasks',
@@ -16,7 +17,7 @@ export const asyncTasks = pgTable(
     userId: text('user_id')
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     duration: integer('duration'),
     parentId: uuid('parent_id'),
     metadata: jsonb('metadata').notNull().default('{}'),

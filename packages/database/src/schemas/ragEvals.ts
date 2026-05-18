@@ -7,6 +7,7 @@ import { timestamps } from './_helpers';
 import { knowledgeBases } from './file';
 import { embeddings } from './rag';
 import { users } from './user';
+import { workspaces } from './workspace';
 
 export const evalDatasets = pgTable(
   'rag_eval_datasets',
@@ -23,7 +24,7 @@ export const evalDatasets = pgTable(
       onDelete: 'cascade',
     }),
     userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
 
     ...timestamps,
   },
@@ -54,7 +55,7 @@ export const evalDatasetRecords = pgTable(
     metadata: jsonb('metadata'),
 
     userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     ...timestamps,
   },
   (t) => [
@@ -91,7 +92,7 @@ export const evalEvaluation = pgTable(
     embeddingModel: text('embedding_model'),
 
     userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     ...timestamps,
   },
   (t) => [
@@ -135,7 +136,7 @@ export const evaluationRecords = pgTable(
       .notNull(),
 
     userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     ...timestamps,
   },
   (t) => [

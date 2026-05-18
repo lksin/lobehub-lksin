@@ -3,6 +3,7 @@ import { bigint, index, jsonb, numeric, pgTable, real, text, vector } from 'driz
 import { idGenerator } from '../../utils/idGenerator';
 import { timestamps, timestamptz, varchar255 } from '../_helpers';
 import { users } from '../user';
+import { workspaces } from '../workspace';
 
 export const userMemories = pgTable(
   'user_memories',
@@ -12,7 +13,7 @@ export const userMemories = pgTable(
       .primaryKey(),
 
     userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
 
     memoryCategory: varchar255('memory_category'),
     memoryLayer: varchar255('memory_layer'),
@@ -56,7 +57,7 @@ export const userMemoriesContexts = pgTable(
       .primaryKey(),
 
     userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     userMemoryIds: jsonb('user_memory_ids').$type<string[]>(),
 
     metadata: jsonb('metadata').$type<Record<string, unknown>>(),
@@ -104,7 +105,7 @@ export const userMemoriesPreferences = pgTable(
       .primaryKey(),
 
     userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     userMemoryId: varchar255('user_memory_id').references(() => userMemories.id, {
       onDelete: 'cascade',
     }),
@@ -143,7 +144,7 @@ export const userMemoriesActivities = pgTable(
       .primaryKey(),
 
     userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     userMemoryId: varchar255('user_memory_id').references(() => userMemories.id, {
       onDelete: 'cascade',
     }),
@@ -215,7 +216,7 @@ export const userMemoriesIdentities = pgTable(
       .primaryKey(),
 
     userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     userMemoryId: varchar255('user_memory_id').references(() => userMemories.id, {
       onDelete: 'cascade',
     }),
@@ -254,7 +255,7 @@ export const userMemoriesExperiences = pgTable(
       .primaryKey(),
 
     userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     userMemoryId: varchar255('user_memory_id').references(() => userMemories.id, {
       onDelete: 'cascade',
     }),

@@ -6,7 +6,7 @@
   },
   "dialect": "postgresql",
   "enums": {},
-  "id": "cc6a9d5f-1261-401e-b1f5-ba4cca322084",
+  "id": "4d2db71a-1b3c-4d58-99d0-9e897b5d0d38",
   "policies": {},
   "prevId": "b8a87f09-525c-4449-9722-b2027be890ed",
   "roles": {},
@@ -351,6 +351,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "agents_workspace_id_workspaces_id_fk": {
+          "name": "agents_workspace_id_workspaces_id_fk",
+          "tableFrom": "agents",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "agents_session_group_id_session_groups_id_fk": {
           "name": "agents_session_group_id_session_groups_id_fk",
           "tableFrom": "agents",
@@ -513,6 +522,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "agents_files_workspace_id_workspaces_id_fk": {
+          "name": "agents_files_workspace_id_workspaces_id_fk",
+          "tableFrom": "agents_files",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -669,6 +687,15 @@
           "tableFrom": "agents_knowledge_bases",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "agents_knowledge_bases_workspace_id_workspaces_id_fk": {
+          "name": "agents_knowledge_bases_workspace_id_workspaces_id_fk",
+          "tableFrom": "agents_knowledge_bases",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -866,6 +893,15 @@
           "tableFrom": "agent_bot_providers",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "agent_bot_providers_workspace_id_workspaces_id_fk": {
+          "name": "agent_bot_providers_workspace_id_workspaces_id_fk",
+          "tableFrom": "agent_bot_providers",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -1139,6 +1175,15 @@
           "tableFrom": "agent_cron_jobs",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "agent_cron_jobs_workspace_id_workspaces_id_fk": {
+          "name": "agent_cron_jobs_workspace_id_workspaces_id_fk",
+          "tableFrom": "agent_cron_jobs",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -1567,6 +1612,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "agent_documents_workspace_id_workspaces_id_fk": {
+          "name": "agent_documents_workspace_id_workspaces_id_fk",
+          "tableFrom": "agent_documents",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "agent_documents_agent_id_agents_id_fk": {
           "name": "agent_documents_agent_id_agents_id_fk",
           "tableFrom": "agent_documents",
@@ -1797,6 +1851,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "agent_eval_benchmarks_workspace_id_workspaces_id_fk": {
+          "name": "agent_eval_benchmarks_workspace_id_workspaces_id_fk",
+          "tableFrom": "agent_eval_benchmarks",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -2000,6 +2063,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "agent_eval_datasets_workspace_id_workspaces_id_fk": {
+          "name": "agent_eval_datasets_workspace_id_workspaces_id_fk",
+          "tableFrom": "agent_eval_datasets",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -2142,6 +2214,15 @@
           "tableFrom": "agent_eval_run_topics",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "agent_eval_run_topics_workspace_id_workspaces_id_fk": {
+          "name": "agent_eval_run_topics_workspace_id_workspaces_id_fk",
+          "tableFrom": "agent_eval_run_topics",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -2376,6 +2457,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "agent_eval_runs_workspace_id_workspaces_id_fk": {
+          "name": "agent_eval_runs_workspace_id_workspaces_id_fk",
+          "tableFrom": "agent_eval_runs",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -2532,6 +2622,15 @@
           "tableFrom": "agent_eval_test_cases",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "agent_eval_test_cases_workspace_id_workspaces_id_fk": {
+          "name": "agent_eval_test_cases_workspace_id_workspaces_id_fk",
+          "tableFrom": "agent_eval_test_cases",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -2982,6 +3081,15 @@
         }
       },
       "foreignKeys": {
+        "agent_operations_workspace_id_workspaces_id_fk": {
+          "name": "agent_operations_workspace_id_workspaces_id_fk",
+          "tableFrom": "agent_operations",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "agent_operations_agent_id_agents_id_fk": {
           "name": "agent_operations_agent_id_agents_id_fk",
           "tableFrom": "agent_operations",
@@ -3273,6 +3381,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "agent_skills_workspace_id_workspaces_id_fk": {
+          "name": "agent_skills_workspace_id_workspaces_id_fk",
+          "tableFrom": "agent_skills",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -3460,6 +3577,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "ai_models_workspace_id_workspaces_id_fk": {
+          "name": "ai_models_workspace_id_workspaces_id_fk",
+          "tableFrom": "ai_models",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -3624,6 +3750,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "ai_providers_workspace_id_workspaces_id_fk": {
+          "name": "ai_providers_workspace_id_workspaces_id_fk",
+          "tableFrom": "ai_providers",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -3756,6 +3891,15 @@
           "tableFrom": "api_keys",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "api_keys_workspace_id_workspaces_id_fk": {
+          "name": "api_keys_workspace_id_workspaces_id_fk",
+          "tableFrom": "api_keys",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -3970,6 +4114,15 @@
           "tableFrom": "async_tasks",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "async_tasks_workspace_id_workspaces_id_fk": {
+          "name": "async_tasks_workspace_id_workspaces_id_fk",
+          "tableFrom": "async_tasks",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -4654,6 +4807,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "chat_groups_workspace_id_workspaces_id_fk": {
+          "name": "chat_groups_workspace_id_workspaces_id_fk",
+          "tableFrom": "chat_groups",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "chat_groups_group_id_session_groups_id_fk": {
           "name": "chat_groups_group_id_session_groups_id_fk",
           "tableFrom": "chat_groups",
@@ -4800,6 +4962,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "chat_groups_agents_workspace_id_workspaces_id_fk": {
+          "name": "chat_groups_agents_workspace_id_workspaces_id_fk",
+          "tableFrom": "chat_groups_agents",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -4937,6 +5108,15 @@
           "tableFrom": "document_histories",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "document_histories_workspace_id_workspaces_id_fk": {
+          "name": "document_histories_workspace_id_workspaces_id_fk",
+          "tableFrom": "document_histories",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -5317,6 +5497,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "documents_workspace_id_workspaces_id_fk": {
+          "name": "documents_workspace_id_workspaces_id_fk",
+          "tableFrom": "documents",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -5593,6 +5782,15 @@
           "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
+        },
+        "files_workspace_id_workspaces_id_fk": {
+          "name": "files_workspace_id_workspaces_id_fk",
+          "tableFrom": "files",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -5815,6 +6013,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "knowledge_base_files_workspace_id_workspaces_id_fk": {
+          "name": "knowledge_base_files_workspace_id_workspaces_id_fk",
+          "tableFrom": "knowledge_base_files",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -5977,6 +6184,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "knowledge_bases_workspace_id_workspaces_id_fk": {
+          "name": "knowledge_bases_workspace_id_workspaces_id_fk",
+          "tableFrom": "knowledge_bases",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -6134,6 +6350,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "generation_batches_workspace_id_workspaces_id_fk": {
+          "name": "generation_batches_workspace_id_workspaces_id_fk",
+          "tableFrom": "generation_batches",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "generation_batches_generation_topic_id_generation_topics_id_fk": {
           "name": "generation_batches_generation_topic_id_generation_topics_id_fk",
           "tableFrom": "generation_batches",
@@ -6251,6 +6476,15 @@
           "tableFrom": "generation_topics",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "generation_topics_workspace_id_workspaces_id_fk": {
+          "name": "generation_topics_workspace_id_workspaces_id_fk",
+          "tableFrom": "generation_topics",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -6408,6 +6642,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "generations_workspace_id_workspaces_id_fk": {
+          "name": "generations_workspace_id_workspaces_id_fk",
+          "tableFrom": "generations",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "generations_generation_batch_id_generation_batches_id_fk": {
           "name": "generations_generation_batch_id_generation_batches_id_fk",
           "tableFrom": "generations",
@@ -6542,6 +6785,15 @@
           "tableFrom": "message_chunks",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "message_chunks_workspace_id_workspaces_id_fk": {
+          "name": "message_chunks_workspace_id_workspaces_id_fk",
+          "tableFrom": "message_chunks",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -6794,6 +7046,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "message_groups_workspace_id_workspaces_id_fk": {
+          "name": "message_groups_workspace_id_workspaces_id_fk",
+          "tableFrom": "message_groups",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "message_groups_parent_group_id_message_groups_id_fk": {
           "name": "message_groups_parent_group_id_message_groups_id_fk",
           "tableFrom": "message_groups",
@@ -6983,6 +7244,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "message_plugins_workspace_id_workspaces_id_fk": {
+          "name": "message_plugins_workspace_id_workspaces_id_fk",
+          "tableFrom": "message_plugins",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -7147,6 +7417,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "message_queries_workspace_id_workspaces_id_fk": {
+          "name": "message_queries_workspace_id_workspaces_id_fk",
+          "tableFrom": "message_queries",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "message_queries_embeddings_id_embeddings_id_fk": {
           "name": "message_queries_embeddings_id_embeddings_id_fk",
           "tableFrom": "message_queries",
@@ -7302,6 +7581,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "message_query_chunks_workspace_id_workspaces_id_fk": {
+          "name": "message_query_chunks_workspace_id_workspaces_id_fk",
+          "tableFrom": "message_query_chunks",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -7442,6 +7730,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "message_tts_workspace_id_workspaces_id_fk": {
+          "name": "message_tts_workspace_id_workspaces_id_fk",
+          "tableFrom": "message_tts",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -7565,6 +7862,15 @@
           "tableFrom": "message_translates",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "message_translates_workspace_id_workspaces_id_fk": {
+          "name": "message_translates_workspace_id_workspaces_id_fk",
+          "tableFrom": "message_translates",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -8034,6 +8340,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "messages_workspace_id_workspaces_id_fk": {
+          "name": "messages_workspace_id_workspaces_id_fk",
+          "tableFrom": "messages",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -8142,6 +8457,15 @@
           "tableFrom": "messages_files",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "messages_files_workspace_id_workspaces_id_fk": {
+          "name": "messages_files_workspace_id_workspaces_id_fk",
+          "tableFrom": "messages_files",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -8326,6 +8650,15 @@
           "tableFrom": "messenger_account_links",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "messenger_account_links_workspace_id_workspaces_id_fk": {
+          "name": "messenger_account_links_workspace_id_workspaces_id_fk",
+          "tableFrom": "messenger_account_links",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -9168,6 +9501,15 @@
           "tableFrom": "notifications",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "notifications_workspace_id_workspaces_id_fk": {
+          "name": "notifications_workspace_id_workspaces_id_fk",
+          "tableFrom": "notifications",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -10227,6 +10569,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "chunks_workspace_id_workspaces_id_fk": {
+          "name": "chunks_workspace_id_workspaces_id_fk",
+          "tableFrom": "chunks",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -10363,6 +10714,15 @@
           "tableFrom": "document_chunks",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "document_chunks_workspace_id_workspaces_id_fk": {
+          "name": "document_chunks_workspace_id_workspaces_id_fk",
+          "tableFrom": "document_chunks",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -10510,6 +10870,15 @@
           "tableFrom": "embeddings",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "embeddings_workspace_id_workspaces_id_fk": {
+          "name": "embeddings_workspace_id_workspaces_id_fk",
+          "tableFrom": "embeddings",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -10722,6 +11091,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "unstructured_chunks_workspace_id_workspaces_id_fk": {
+          "name": "unstructured_chunks_workspace_id_workspaces_id_fk",
+          "tableFrom": "unstructured_chunks",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "unstructured_chunks_file_id_files_id_fk": {
           "name": "unstructured_chunks_file_id_files_id_fk",
           "tableFrom": "unstructured_chunks",
@@ -10862,6 +11240,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "rag_eval_dataset_records_workspace_id_workspaces_id_fk": {
+          "name": "rag_eval_dataset_records_workspace_id_workspaces_id_fk",
+          "tableFrom": "rag_eval_dataset_records",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -10979,6 +11366,15 @@
           "tableFrom": "rag_eval_datasets",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "rag_eval_datasets_workspace_id_workspaces_id_fk": {
+          "name": "rag_eval_datasets_workspace_id_workspaces_id_fk",
+          "tableFrom": "rag_eval_datasets",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -11144,6 +11540,15 @@
           "tableFrom": "rag_eval_evaluations",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "rag_eval_evaluations_workspace_id_workspaces_id_fk": {
+          "name": "rag_eval_evaluations_workspace_id_workspaces_id_fk",
+          "tableFrom": "rag_eval_evaluations",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -11336,6 +11741,15 @@
           "tableFrom": "rag_eval_evaluation_records",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "rag_eval_evaluation_records_workspace_id_workspaces_id_fk": {
+          "name": "rag_eval_evaluation_records_workspace_id_workspaces_id_fk",
+          "tableFrom": "rag_eval_evaluation_records",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -11807,6 +12221,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "agents_to_sessions_workspace_id_workspaces_id_fk": {
+          "name": "agents_to_sessions_workspace_id_workspaces_id_fk",
+          "tableFrom": "agents_to_sessions",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -11945,6 +12368,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "file_chunks_workspace_id_workspaces_id_fk": {
+          "name": "file_chunks_workspace_id_workspaces_id_fk",
+          "tableFrom": "file_chunks",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -12073,6 +12505,15 @@
           "tableFrom": "files_to_sessions",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "files_to_sessions_workspace_id_workspaces_id_fk": {
+          "name": "files_to_sessions_workspace_id_workspaces_id_fk",
+          "tableFrom": "files_to_sessions",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -12210,6 +12651,15 @@
           "tableFrom": "session_groups",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "session_groups_workspace_id_workspaces_id_fk": {
+          "name": "session_groups_workspace_id_workspaces_id_fk",
+          "tableFrom": "session_groups",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -12492,6 +12942,15 @@
           "columnsFrom": ["group_id"],
           "columnsTo": ["id"],
           "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "sessions_workspace_id_workspaces_id_fk": {
+          "name": "sessions_workspace_id_workspaces_id_fk",
+          "tableFrom": "sessions",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -12876,6 +13335,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "briefs_workspace_id_workspaces_id_fk": {
+          "name": "briefs_workspace_id_workspaces_id_fk",
+          "tableFrom": "briefs",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "briefs_task_id_tasks_id_fk": {
           "name": "briefs_task_id_tasks_id_fk",
           "tableFrom": "briefs",
@@ -13113,6 +13581,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "task_comments_workspace_id_workspaces_id_fk": {
+          "name": "task_comments_workspace_id_workspaces_id_fk",
+          "tableFrom": "task_comments",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "task_comments_author_user_id_users_id_fk": {
           "name": "task_comments_author_user_id_users_id_fk",
           "tableFrom": "task_comments",
@@ -13322,6 +13799,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "task_dependencies_workspace_id_workspaces_id_fk": {
+          "name": "task_dependencies_workspace_id_workspaces_id_fk",
+          "tableFrom": "task_dependencies",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -13487,6 +13973,15 @@
           "tableFrom": "task_documents",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "task_documents_workspace_id_workspaces_id_fk": {
+          "name": "task_documents_workspace_id_workspaces_id_fk",
+          "tableFrom": "task_documents",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -13738,6 +14233,15 @@
           "tableFrom": "task_topics",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "task_topics_workspace_id_workspaces_id_fk": {
+          "name": "task_topics_workspace_id_workspaces_id_fk",
+          "tableFrom": "task_topics",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -14168,6 +14672,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "tasks_workspace_id_workspaces_id_fk": {
+          "name": "tasks_workspace_id_workspaces_id_fk",
+          "tableFrom": "tasks",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "tasks_created_by_agent_id_agents_id_fk": {
           "name": "tasks_created_by_agent_id_agents_id_fk",
           "tableFrom": "tasks",
@@ -14516,6 +15029,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "threads_workspace_id_workspaces_id_fk": {
+          "name": "threads_workspace_id_workspaces_id_fk",
+          "tableFrom": "threads",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -14646,6 +15168,15 @@
           "tableFrom": "topic_documents",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "topic_documents_workspace_id_workspaces_id_fk": {
+          "name": "topic_documents_workspace_id_workspaces_id_fk",
+          "tableFrom": "topic_documents",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -14788,6 +15319,15 @@
           "tableFrom": "topic_shares",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "topic_shares_workspace_id_workspaces_id_fk": {
+          "name": "topic_shares_workspace_id_workspaces_id_fk",
+          "tableFrom": "topic_shares",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -15155,6 +15695,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "topics_workspace_id_workspaces_id_fk": {
+          "name": "topics_workspace_id_workspaces_id_fk",
+          "tableFrom": "topics",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -15260,6 +15809,15 @@
           "tableFrom": "user_installed_plugins",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_installed_plugins_workspace_id_workspaces_id_fk": {
+          "name": "user_installed_plugins_workspace_id_workspaces_id_fk",
+          "tableFrom": "user_installed_plugins",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -15846,6 +16404,15 @@
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "user_memories_workspace_id_workspaces_id_fk": {
+          "name": "user_memories_workspace_id_workspaces_id_fk",
+          "tableFrom": "user_memories",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -16121,6 +16688,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "user_memories_activities_workspace_id_workspaces_id_fk": {
+          "name": "user_memories_activities_workspace_id_workspaces_id_fk",
+          "tableFrom": "user_memories_activities",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "user_memories_activities_user_memory_id_user_memories_id_fk": {
           "name": "user_memories_activities_user_memory_id_user_memories_id_fk",
           "tableFrom": "user_memories_activities",
@@ -16331,6 +16907,15 @@
           "tableFrom": "user_memories_contexts",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_memories_contexts_workspace_id_workspaces_id_fk": {
+          "name": "user_memories_contexts_workspace_id_workspaces_id_fk",
+          "tableFrom": "user_memories_contexts",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -16592,6 +17177,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "user_memories_experiences_workspace_id_workspaces_id_fk": {
+          "name": "user_memories_experiences_workspace_id_workspaces_id_fk",
+          "tableFrom": "user_memories_experiences",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "user_memories_experiences_user_memory_id_user_memories_id_fk": {
           "name": "user_memories_experiences_user_memory_id_user_memories_id_fk",
           "tableFrom": "user_memories_experiences",
@@ -16801,6 +17395,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
+        "user_memories_identities_workspace_id_workspaces_id_fk": {
+          "name": "user_memories_identities_workspace_id_workspaces_id_fk",
+          "tableFrom": "user_memories_identities",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "user_memories_identities_user_memory_id_user_memories_id_fk": {
           "name": "user_memories_identities_user_memory_id_user_memories_id_fk",
           "tableFrom": "user_memories_identities",
@@ -16986,6 +17589,15 @@
           "tableFrom": "user_memories_preferences",
           "tableTo": "users",
           "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_memories_preferences_workspace_id_workspaces_id_fk": {
+          "name": "user_memories_preferences_workspace_id_workspaces_id_fk",
+          "tableFrom": "user_memories_preferences",
+          "tableTo": "workspaces",
+          "columnsFrom": ["workspace_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"

@@ -3,6 +3,7 @@ import { boolean, index, pgTable, text, uniqueIndex, uuid } from 'drizzle-orm/pg
 
 import { createdAt, timestamptz, updatedAt } from './_helpers';
 import { users } from './user';
+import { workspaces } from './workspace';
 
 export const notifications = pgTable(
   'notifications',
@@ -12,7 +13,7 @@ export const notifications = pgTable(
     userId: text('user_id')
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
 
     /** High-level grouping for preference toggles, e.g. `budget`, `subscription` */
     category: text('category').notNull(),

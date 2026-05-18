@@ -19,6 +19,7 @@ import { chatGroups } from './chatGroup';
 import { documents } from './file';
 import { sessions } from './session';
 import { users } from './user';
+import { workspaces } from './workspace';
 
 export const topics = pgTable(
   'topics',
@@ -46,7 +47,7 @@ export const topics = pgTable(
       enum: ['active', 'running', 'paused', 'waitingForHuman', 'failed', 'completed', 'archived'],
     }),
     completedAt: timestamptz('completed_at'),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     ...timestamps,
   },
   (t) => [
@@ -112,7 +113,7 @@ export const threads = pgTable(
       .notNull(),
 
     lastActiveAt: timestamptz('last_active_at').defaultNow(),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
     ...timestamps,
   },
   (t) => [
@@ -148,7 +149,7 @@ export const topicDocuments = pgTable(
     userId: text('user_id')
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
 
     createdAt: createdAt(),
   },
@@ -181,7 +182,7 @@ export const topicShares = pgTable(
     userId: text('user_id')
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
-    workspaceId: text('workspace_id'),
+    workspaceId: text('workspace_id').references(() => workspaces.id, { onDelete: 'cascade' }),
 
     visibility: text('visibility').default('private').notNull(), // 'private' | 'link'
 
