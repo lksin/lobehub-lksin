@@ -4,6 +4,11 @@ import { isDesktopLocalStaticServerUrl } from '@lobechat/utils/url';
 
 import type { VisualFileItem } from '../../visualMedia';
 
+interface ResolveClientVisualMediaPayloadItemsParams {
+  selectedRefs: VisualFileItem[];
+  selectedUrls: VisualFileItem[];
+}
+
 /**
  * Desktop attachments are exposed through a 127.0.0.1 static file server.
  * Convert those URLs in the client before sending a remote visual request;
@@ -26,3 +31,11 @@ export const resolveClientVisualMediaUris = async (
       };
     }),
   );
+
+export const resolveClientVisualMediaPayloadItems = async ({
+  selectedRefs,
+  selectedUrls,
+}: ResolveClientVisualMediaPayloadItemsParams): Promise<VisualFileItem[]> => [
+  ...(await resolveClientVisualMediaUris(selectedRefs)),
+  ...selectedUrls,
+];

@@ -1,8 +1,11 @@
 import { imageUrlToBase64 } from '@lobechat/utils/imageToBase64';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { VisualFileItem } from '../../visualMedia';
-import { resolveClientVisualMediaUris } from './resolveVisualMediaUris';
+import {
+  resolveClientVisualMediaPayloadItems,
+  resolveClientVisualMediaUris,
+} from './resolveVisualMediaUris';
 
 vi.mock('@lobechat/utils/imageToBase64', () => ({
   imageUrlToBase64: vi.fn(),
@@ -19,6 +22,10 @@ const createVisualItem = (item: Partial<VisualFileItem>): VisualFileItem => ({
 });
 
 describe('resolveClientVisualMediaUris', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('should convert desktop local visual media URLs to data URLs', async () => {
     vi.mocked(imageUrlToBase64)
       .mockResolvedValueOnce({
@@ -70,5 +77,38 @@ describe('resolveClientVisualMediaUris', () => {
     expect(imageUrlToBase64).toHaveBeenCalledTimes(2);
     expect(imageUrlToBase64).toHaveBeenNthCalledWith(1, 'http://127.0.0.1:3210/uploads/local.png');
     expect(imageUrlToBase64).toHaveBeenNthCalledWith(2, 'http://127.0.0.1:3210/uploads/local.mp4');
+  });
+
+  it('should only convert attachment refs when building visual media payload items', async () => {
+    vi.mocked(imageUrlToBase64).mockResolvedValue({
+      base64: 'attachment-base64',
+      mimeType: 'image/png',
+    });
+
+    const localAttachment = createVisualItem({
+      name: 'attachment.png',
+      uri: 'http://127.0.0.1:3210/uploads/attachment.png',
+    });
+    const directLocalUrl = createVisualItem({
+      localRef: 'url_1',
+      name: 'direct.png',
+      ref: 'url_1',
+      uri: 'http://127.0.0.1:3210/private/direct.png',
+    });
+
+    const result = await resolveClientVisualMediaPayloadItems({
+      selectedRefs: [localAttachment],
+      selectedUrls: [directLocalUrl],
+    });
+
+    expect(result).toEqual([
+      {
+        ...localAttachment,
+        uri: 'data:image/png;base64,attachment-base64',
+      },
+      directLocalUrl,
+    ]);
+    expect(imageUrlToBase64).toHaveBeenCalledTimes(1);
+    expect(imageUrlToBase64).toHaveBeenCalledWith('http://127.0.0.1:3210/uploads/attachment.png');
   });
 });
