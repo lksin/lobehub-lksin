@@ -34,6 +34,7 @@ import DesktopHomeLayout from '../home/_layout';
 import DesktopAutoOidcOnFirstOpen from './DesktopAutoOidcOnFirstOpen';
 import DesktopLayoutContainer from './DesktopLayoutContainer';
 import RegisterHotkeys from './RegisterHotkeys';
+import V2ProviderSync from './V2ProviderSync';
 import { styles } from './style';
 
 const FeedbackModal = lazy(() => import('@/components/FeedbackModal'));
@@ -51,6 +52,7 @@ const Layout: FC = () => {
 
   return (
     <HotkeysProvider initiallyActiveScopes={[HotkeyScopeEnum.Global]}>
+      <V2ProviderSync />
       <Suspense fallback={null}>
         {isDesktop && <DesktopAutoOidcOnFirstOpen />}
         {isDesktop && <DesktopNavigationBridge />}

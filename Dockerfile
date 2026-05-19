@@ -110,8 +110,8 @@ COPY --from=base /distroless/ /
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder /app/.next/standalone /app/
 COPY --from=builder /app/.next/static /app/.next/static
-# Copy SPA assets (Vite build output)
-COPY --from=builder /app/public/_spa /app/public/_spa
+# Copy public assets (includes SPA build output and static files like favicons)
+COPY --from=builder /app/public /app/public
 # Copy database migrations
 COPY --from=builder /app/packages/database/migrations /app/migrations
 COPY --from=builder /app/scripts/migrateServerDB/docker.cjs /app/docker.cjs
@@ -163,6 +163,10 @@ ENV APP_URL="" \
 ENV KEY_VAULTS_SECRET="" \
     DATABASE_DRIVER="node" \
     DATABASE_URL=""
+
+# GPT Board v2 group provider sync
+ENV V2_API_URL="" \
+    V2_LOBE_SHARED_SECRET=""
 
 # Better Auth
 ENV AUTH_SECRET="" \
