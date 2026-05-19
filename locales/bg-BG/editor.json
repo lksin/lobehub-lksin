@@ -1,8 +1,10 @@
 {
   "actionTag.category.command": "Команда",
+  "actionTag.category.projectSkill": "Умение за проект",
   "actionTag.category.skill": "Умение",
   "actionTag.category.tool": "Инструмент",
   "actionTag.tooltip.command": "Изпълнява локална slash команда преди изпращане.",
+  "actionTag.tooltip.projectSkill": "Изпратено като извикване със слеш, така че CLI на агента да изпълни съответстващото умение за проект.",
   "actionTag.tooltip.skill": "Зарежда многократно използваем пакет с умения за тази заявка.",
   "actionTag.tooltip.tool": "Маркира инструмент, който потребителят е избрал изрично за тази заявка.",
   "actions.expand.off": "Свий",
