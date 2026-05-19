@@ -255,7 +255,7 @@ export const getLLMConfig = () => {
     runtimeEnv: {
       API_KEY_SELECT_MODE: process.env.API_KEY_SELECT_MODE,
 
-      ENABLED_OPENAI: process.env.ENABLED_OPENAI !== '0',
+      ENABLED_OPENAI: process.env.ENABLED_OPENAI === '1',
       OPENAI_API_KEY: process.env.OPENAI_API_KEY,
 
       ENABLED_AZURE_OPENAI: !!process.env.AZURE_API_KEY,
@@ -273,7 +273,7 @@ export const getLLMConfig = () => {
       ENABLED_DEEPSEEK: !!process.env.DEEPSEEK_API_KEY,
       DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
 
-      ENABLED_GOOGLE: process.env.ENABLED_GOOGLE !== '0',
+      ENABLED_GOOGLE: process.env.ENABLED_GOOGLE === '1',
       GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
 
       ENABLED_VERTEXAI: !!process.env.VERTEXAI_CREDENTIALS,
@@ -284,7 +284,7 @@ export const getLLMConfig = () => {
       ENABLED_PERPLEXITY: !!process.env.PERPLEXITY_API_KEY,
       PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
 
-      ENABLED_ANTHROPIC: process.env.ENABLED_ANTHROPIC !== '0',
+      ENABLED_ANTHROPIC: process.env.ENABLED_ANTHROPIC === '1',
       ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
 
       ENABLED_MINIMAX: !!process.env.MINIMAX_API_KEY,
@@ -338,7 +338,7 @@ export const getLLMConfig = () => {
       ENABLED_WENXIN: !!process.env.WENXIN_API_KEY,
       WENXIN_API_KEY: process.env.WENXIN_API_KEY,
 
-      ENABLED_OLLAMA: process.env.ENABLED_OLLAMA !== '0',
+      ENABLED_OLLAMA: process.env.ENABLED_OLLAMA === '1',
       ENABLED_OLLAMA_CLOUD: !!process.env.OLLAMA_CLOUD_API_KEY,
       OLLAMA_CLOUD_API_KEY: process.env.OLLAMA_CLOUD_API_KEY,
 
@@ -434,13 +434,13 @@ export const getLLMConfig = () => {
       ENABLED_INFINIAI: !!process.env.INFINIAI_API_KEY,
       INFINIAI_API_KEY: process.env.INFINIAI_API_KEY,
 
-      ENABLED_FAL: process.env.ENABLED_FAL !== '0',
+      ENABLED_FAL: process.env.ENABLED_FAL === '1',
       FAL_API_KEY: process.env.FAL_API_KEY,
 
       ENABLED_BFL: !!process.env.BFL_API_KEY,
       BFL_API_KEY: process.env.BFL_API_KEY,
 
-      ENABLED_COMFYUI: process.env.ENABLED_COMFYUI !== '0',
+      ENABLED_COMFYUI: process.env.ENABLED_COMFYUI === '1',
       COMFYUI_BASE_URL: process.env.COMFYUI_BASE_URL,
       COMFYUI_AUTH_TYPE: process.env.COMFYUI_AUTH_TYPE,
       COMFYUI_API_KEY: process.env.COMFYUI_API_KEY,

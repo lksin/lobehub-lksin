@@ -22,8 +22,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { V2_API_URL, V2_LOBE_SHARED_SECRET } = getServerDBConfig();
-  if (!V2_API_URL || !V2_LOBE_SHARED_SECRET) {
+  const { V2_API_URL, V2_LOBE_SHARED_SECRET, V2_USER_ID } = getServerDBConfig();
+  if (!V2_API_URL || !V2_LOBE_SHARED_SECRET || !V2_USER_ID) {
     return NextResponse.json({ error: 'v2 sync not configured' }, { status: 503 });
   }
 
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
   let providers: V2Provider[];
   try {
-    const resp = await fetch(`${V2_API_URL}/api/lobe/providers/${userId}`, {
+    const resp = await fetch(`${V2_API_URL}/api/lobe/providers/${V2_USER_ID}`, {
       headers: { 'X-Lobe-Secret': V2_LOBE_SHARED_SECRET },
     });
 

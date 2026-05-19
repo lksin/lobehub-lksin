@@ -14,6 +14,7 @@ export const getServerDBConfig = () => {
 
       V2_API_URL: process.env.V2_API_URL,
       V2_LOBE_SHARED_SECRET: process.env.V2_LOBE_SHARED_SECRET,
+      V2_USER_ID: process.env.V2_USER_ID ? Number(process.env.V2_USER_ID) : undefined,
     },
     server: {
       DATABASE_DRIVER: z.enum(['neon', 'node']),
@@ -26,6 +27,7 @@ export const getServerDBConfig = () => {
 
       V2_API_URL: z.string().url().optional(),
       V2_LOBE_SHARED_SECRET: z.string().optional(),
+      V2_USER_ID: z.number().int().positive().optional(),
     },
   });
 };

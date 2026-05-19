@@ -166,7 +166,8 @@ ENV KEY_VAULTS_SECRET="" \
 
 # GPT Board v2 group provider sync
 ENV V2_API_URL="" \
-    V2_LOBE_SHARED_SECRET=""
+    V2_LOBE_SHARED_SECRET="" \
+    V2_USER_ID=""
 
 # Better Auth
 ENV AUTH_SECRET="" \
