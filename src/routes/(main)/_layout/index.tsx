@@ -34,8 +34,8 @@ import DesktopHomeLayout from '../home/_layout';
 import DesktopAutoOidcOnFirstOpen from './DesktopAutoOidcOnFirstOpen';
 import DesktopLayoutContainer from './DesktopLayoutContainer';
 import RegisterHotkeys from './RegisterHotkeys';
-import V2ProviderSync from './V2ProviderSync';
 import { styles } from './style';
+import V2ProviderSync from './V2ProviderSync';
 
 const FeedbackModal = lazy(() => import('@/components/FeedbackModal'));
 
