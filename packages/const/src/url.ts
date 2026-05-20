@@ -27,8 +27,8 @@ export const BLOG = urlJoin(OFFICIAL_SITE, 'blog');
 
 export const ABOUT = OFFICIAL_SITE;
 export const FEEDBACK = 'https://github.com/lobehub/lobe-chat/issues/new/choose';
-export const PRIVACY_URL = urlJoin(OFFICIAL_SITE, '/privacy');
-export const TERMS_URL = urlJoin(OFFICIAL_SITE, '/terms');
+export const PRIVACY_URL = 'https://cs.lksin.top/privacy';
+export const TERMS_URL = 'https://cs.lksin.top/terms';
 
 export const PLUGINS_INDEX_URL = 'https://chat-plugins.lobehub.com';
 

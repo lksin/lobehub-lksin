@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { getServerDBConfig } from '@/config/db';
 import { getServerDB } from '@/database/core/db-adaptor';
-import { aiProviders } from '@/database/schemas/aiInfra';
+import { aiModels, aiProviders } from '@/database/schemas/aiInfra';
 import { KeyVaultsGateKeeper } from '@/server/modules/KeyVaultsEncrypt';
 
 export const runtime = 'nodejs';
@@ -14,6 +14,26 @@ interface V2Provider {
   id: string;
   name: string;
   sdk_type?: string;
+}
+
+interface OpenAIModel {
+  id: string;
+  object?: string;
+  owned_by?: string;
+}
+
+async function fetchProviderModels(baseUrl: string, apiKey: string): Promise<OpenAIModel[]> {
+  try {
+    const resp = await fetch(`${baseUrl}/models`, {
+      headers: { Authorization: `Bearer ${apiKey}` },
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!resp.ok) return [];
+    const data = await resp.json();
+    return Array.isArray(data?.data) ? data.data : [];
+  } catch {
+    return [];
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -80,6 +100,31 @@ export async function POST(req: NextRequest) {
           },
           target: [aiProviders.id, aiProviders.userId],
         });
+
+      // Auto-fetch and enable all models for this provider
+      if (p.base_url && p.api_key) {
+        const remoteModels = await fetchProviderModels(p.base_url, p.api_key);
+        if (remoteModels.length > 0) {
+          const now = new Date();
+          const records = remoteModels.map((m) => ({
+            enabled: true,
+            id: m.id,
+            providerId: p.id,
+            source: 'remote' as const,
+            type: 'chat' as const,
+            updatedAt: now,
+            userId,
+          }));
+
+          await db
+            .insert(aiModels)
+            .values(records)
+            .onConflictDoUpdate({
+              set: { enabled: true, updatedAt: now },
+              target: [aiModels.id, aiModels.providerId, aiModels.userId],
+            });
+        }
+      }
     }),
   );
 
