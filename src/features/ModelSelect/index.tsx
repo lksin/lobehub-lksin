@@ -135,6 +135,7 @@ const ModelSelect = memo<ModelSelectProps>(
             ...style,
           }}
           onChange={(value, option) => {
+            if (value == null) return;
             const model = value.split('/').slice(1).join('/');
             onChange?.({ model, provider: (option as unknown as ModelOption).provider });
           }}

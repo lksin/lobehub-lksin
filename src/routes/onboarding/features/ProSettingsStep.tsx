@@ -113,7 +113,7 @@ const ProSettingsStep = memo<ProSettingsStepProps>(({ onBack }) => {
         <Text color={cssVar.colorTextSecondary}>{t('proSettings.model.title')}</Text>
         <ModelSelect
           loading={isSyncing}
-          providerIds={!isSyncing && hasGroup5Models ? [ONBOARDING_PROVIDER] : undefined}
+          providerIds={isSyncing || hasGroup5Models ? [ONBOARDING_PROVIDER] : undefined}
           showAbility={false}
           size="large"
           style={{ width: '100%' }}
