@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import { sha256 } from 'js-sha256';
 
 import { fileEnv } from '@/envs/file';
-import { lambdaClient } from '@/libs/trpc/client';
 import { type FileMetadata, type UploadBase64ToS3Result } from '@/types/files';
 import { type FileUploadState, type FileUploadStatus } from '@/types/files/upload';
 
@@ -142,24 +141,25 @@ class UploadService {
       pathname?: string;
     },
   ): Promise<FileMetadata> => {
-    const xhr = new XMLHttpRequest();
+    // Generate path metadata locally — no presigned URL round-trip needed.
+    // Upload goes through the same-origin /api/upload route so the browser
+    // never makes a cross-origin request to R2 directly (avoids CORS preflight).
+    const { date, dirname, filename, pathname: filePath } = generateFilePathMetadata(
+      file.name,
+      { directory, pathname },
+    );
 
-    const { preSignUrl, ...result } = await this.getSignedUploadUrl(file, { directory, pathname });
+    const xhr = new XMLHttpRequest();
     const startTime = Date.now();
 
-    // Setup abort listener
     if (abortController) {
-      abortController.signal.addEventListener('abort', () => {
-        xhr.abort();
-      });
+      abortController.signal.addEventListener('abort', () => xhr.abort());
     }
 
     xhr.upload.addEventListener('progress', (event) => {
       if (event.lengthComputable) {
         const progress = Number(((event.loaded / event.total) * 100).toFixed(1));
-
         const speedInByte = event.loaded / ((Date.now() - startTime) / 1000);
-
         onProgress?.('uploading', {
           // if the progress is 100, it means the file is uploaded
           // but the server is still processing it
@@ -171,8 +171,10 @@ class UploadService {
       }
     });
 
-    xhr.open('PUT', preSignUrl);
+    xhr.open('POST', '/api/upload');
     xhr.setRequestHeader('Content-Type', file.type);
+    xhr.setRequestHeader('X-S3-Pathname', filePath);
+
     const data = await file.arrayBuffer();
 
     await new Promise((resolve, reject) => {
@@ -199,29 +201,7 @@ class UploadService {
       xhr.send(data);
     });
 
-    return result;
-  };
-
-  private getSignedUploadUrl = async (
-    file: File,
-    options: { directory?: string; pathname?: string } = {},
-  ): Promise<
-    FileMetadata & {
-      preSignUrl: string;
-    }
-  > => {
-    // Generate file path metadata
-    const { date, dirname, filename, pathname } = generateFilePathMetadata(file.name, options);
-
-    const preSignUrl = await lambdaClient.upload.createS3PreSignedUrl.mutate({ pathname });
-
-    return {
-      date,
-      dirname,
-      filename,
-      path: pathname,
-      preSignUrl,
-    };
+    return { date, dirname, filename, path: filePath };
   };
 }
 

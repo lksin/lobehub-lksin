@@ -36,22 +36,57 @@ async function fetchProviderModels(baseUrl: string, apiKey: string): Promise<Ope
   }
 }
 
+/**
+ * Look up the V2 integer user ID for a given email address.
+ * V2 endpoint: GET /api/lobe/users/by-email/:email
+ * Returns { id: number } on success, null if not found.
+ */
+async function lookupV2UserId(
+  v2ApiUrl: string,
+  sharedSecret: string,
+  email: string,
+): Promise<number | null> {
+  try {
+    const resp = await fetch(
+      `${v2ApiUrl}/api/lobe/users/by-email/${encodeURIComponent(email)}`,
+      { headers: { 'X-Lobe-Secret': sharedSecret } },
+    );
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    return typeof data?.id === 'number' ? data.id : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function POST(req: NextRequest) {
   const session = await auth.api.getSession({ headers: req.headers });
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { V2_API_URL, V2_LOBE_SHARED_SECRET, V2_USER_ID } = getServerDBConfig();
-  if (!V2_API_URL || !V2_LOBE_SHARED_SECRET || !V2_USER_ID) {
+  const { V2_API_URL, V2_LOBE_SHARED_SECRET } = getServerDBConfig();
+  if (!V2_API_URL || !V2_LOBE_SHARED_SECRET) {
     return NextResponse.json({ error: 'v2 sync not configured' }, { status: 503 });
   }
 
   const userId = session.user.id;
+  const email = session.user.email;
+
+  if (!email) {
+    return NextResponse.json({ error: 'User email not available' }, { status: 400 });
+  }
+
+  // Resolve the current user's V2 integer ID via email — each user gets their own providers
+  const v2UserId = await lookupV2UserId(V2_API_URL, V2_LOBE_SHARED_SECRET, email);
+  if (!v2UserId) {
+    // User not found in V2 system; skip sync gracefully
+    return NextResponse.json({ synced: 0 });
+  }
 
   let providers: V2Provider[];
   try {
-    const resp = await fetch(`${V2_API_URL}/api/lobe/providers/${V2_USER_ID}`, {
+    const resp = await fetch(`${V2_API_URL}/api/lobe/providers/${v2UserId}`, {
       headers: { 'X-Lobe-Secret': V2_LOBE_SHARED_SECRET },
     });
 

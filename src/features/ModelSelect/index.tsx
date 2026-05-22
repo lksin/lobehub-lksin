@@ -40,6 +40,7 @@ interface ModelSelectProps extends Pick<SelectProps, 'loading' | 'size' | 'style
   initialWidth?: boolean;
   onChange?: (props: { model: string; provider: string }) => void;
   popupWidth?: number;
+  providerIds?: string[];
   requiredAbilities?: (keyof EnabledProviderWithModels['children'][number]['abilities'])[];
   showAbility?: boolean;
   value?: { model: string; provider?: string };
@@ -57,10 +58,16 @@ const ModelSelect = memo<ModelSelectProps>(
     variant,
     initialWidth = false,
     popupWidth,
+    providerIds,
   }) => {
     const enabledList = useEnabledChatModels();
 
     const options = useMemo<SelectProps['options']>(() => {
+      const filteredList =
+        providerIds && providerIds.length > 0
+          ? enabledList.filter((p) => providerIds.includes(p.id))
+          : enabledList;
+
       const getChatModels = (provider: EnabledProviderWithModels) => {
         const models =
           requiredAbilities && requiredAbilities.length > 0
@@ -77,13 +84,13 @@ const ModelSelect = memo<ModelSelectProps>(
         }));
       };
 
-      if (enabledList.length === 1) {
-        const provider = enabledList[0];
+      if (filteredList.length === 1) {
+        const provider = filteredList[0];
 
         return getChatModels(provider);
       }
 
-      return enabledList
+      return filteredList
         .map((provider) => {
           const opts = getChatModels(provider);
           if (opts.length === 0) return undefined;
@@ -101,7 +108,7 @@ const ModelSelect = memo<ModelSelectProps>(
           };
         })
         .filter(Boolean) as SelectProps['options'];
-    }, [enabledList, requiredAbilities, showAbility]);
+    }, [enabledList, providerIds, requiredAbilities, showAbility]);
 
     return (
       <TooltipGroup>
