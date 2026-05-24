@@ -105,11 +105,14 @@ const FileUpload = memo(() => {
           multiple
           showUploadList={false}
           beforeUpload={async (file) => {
-            if (
-              (file.type.startsWith('image') && !canUploadImage) ||
-              (file.type.startsWith('video') && !canUploadVideo)
-            )
+            if (file.type.startsWith('image') && !canUploadImage) {
+              message.warning(t('upload.action.imageDisabled'));
               return false;
+            }
+            if (file.type.startsWith('video') && !canUploadVideo) {
+              message.warning(t('upload.clientMode.visionNotSupported'));
+              return false;
+            }
 
             // Validate video file size
             const validation = validateVideoFileSize(file);
@@ -142,11 +145,14 @@ const FileUpload = memo(() => {
           multiple={true}
           showUploadList={false}
           beforeUpload={async (file) => {
-            if (
-              (file.type.startsWith('image') && !canUploadImage) ||
-              (file.type.startsWith('video') && !canUploadVideo)
-            )
+            if (file.type.startsWith('image') && !canUploadImage) {
+              message.warning(t('upload.action.imageDisabled'));
               return false;
+            }
+            if (file.type.startsWith('video') && !canUploadVideo) {
+              message.warning(t('upload.clientMode.visionNotSupported'));
+              return false;
+            }
 
             // Validate video file size
             const validation = validateVideoFileSize(file);
