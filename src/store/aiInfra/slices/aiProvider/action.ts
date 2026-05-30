@@ -90,8 +90,12 @@ export const normalizeChatModel = async (model: EnabledAiModel): Promise<Provide
 export const normalizeImageModel = async (
   model: EnabledAiModel,
 ): Promise<ProviderModelListItem> => {
-  const fallbackParametersPromise = model.parameters
-    ? Promise.resolve<ModelParamsSchema | undefined>(model.parameters)
+  // DB default is {} — treat empty object the same as undefined so the builtin schema fallback kicks in
+  const ownParams =
+    model.parameters && Object.keys(model.parameters).length > 0 ? model.parameters : undefined;
+
+  const fallbackParametersPromise = ownParams
+    ? Promise.resolve<ModelParamsSchema | undefined>(ownParams)
     : getModelPropertyWithFallback<ModelParamsSchema | undefined>(
         model.id,
         'parameters',
@@ -115,7 +119,7 @@ export const normalizeImageModel = async (
     fallbackDescriptionPromise,
   ]);
 
-  const parameters = model.parameters ?? fallbackParameters;
+  const parameters = ownParams ?? fallbackParameters;
   const pricing = fallbackPricing;
   const description = fallbackDescription;
   const { price, approximatePrice } = resolveImageSinglePrice(pricing);
@@ -137,8 +141,12 @@ export const normalizeImageModel = async (
 export const normalizeVideoModel = async (
   model: EnabledAiModel,
 ): Promise<ProviderModelListItem> => {
-  const fallbackParametersPromise = model.parameters
-    ? Promise.resolve<ModelParamsSchema | undefined>(model.parameters)
+  // DB default is {} — treat empty object the same as undefined so the builtin schema fallback kicks in
+  const ownParams =
+    model.parameters && Object.keys(model.parameters).length > 0 ? model.parameters : undefined;
+
+  const fallbackParametersPromise = ownParams
+    ? Promise.resolve<ModelParamsSchema | undefined>(ownParams)
     : getModelPropertyWithFallback<ModelParamsSchema | undefined>(
         model.id,
         'parameters',
@@ -162,7 +170,7 @@ export const normalizeVideoModel = async (
     fallbackDescriptionPromise,
   ]);
 
-  const parameters = model.parameters ?? fallbackParameters;
+  const parameters = ownParams ?? fallbackParameters;
   const pricing = fallbackPricing;
   const description = fallbackDescription;
   const { approximatePrice } = resolveVideoSinglePrice(pricing);
